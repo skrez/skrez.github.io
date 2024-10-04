@@ -62,6 +62,15 @@
         Fine Hall, Washington Rd<br />
       <h3> Mathematics </h3>
         <ul>
+		<li><a href="https://arxiv.org/abs/2405.18370">Cyclotomic Structures in Symplectic Topology</a> <br/> 
+			<em>This paper defines a genuine p-cyclotomic spectrum which
+				lifts symplectic cohomology. This spectrum should agree
+				with Topological Hochschild Homology of the Fukaya category
+				of the ambient symplectic manifold (with coefficients in
+				the sphere), and should explain various arithmetic
+				phenomena in mirror symmetry. The underlying methods
+				developed in the paper, which allow the use of genuine
+				equivariant Floer homology, should have many other applications.</em></li>
         <li><a href="https://arxiv.org/abs/2210.12047">Holomorphic Floer Theory and the Fueter Equation</a> <br/>
         <em>(joint with Alexander Doan.) This paper outlines the structure of the Fueter 2-category, a 2-category assigned to a hyperkahler manifold M which categorifies the Fukaya category of M. We introduce new maximum principles for Fueter maps and prove an adiabatic limit theorem which categorifies and complexifies Floer's theorem on pseudoholomorphic curves in cotangent bundles. The Fueter 2-category is the 2-category of boundary conditions of the A-twist of the 3D N=4 sigma nodel, and as such sits at the intersection of several different fields of mathematics and physics which I am excited to explore.</em></li>
         <li><a href="https://arxiv.org/abs/2209.11165">Integral Arnol'd Conjecture</a><br/>
@@ -79,7 +88,12 @@
     </ul>
    	<p><em><b>Applications of Mathematics</b></em><br/>
     <ul>
-        <li><a href="https://arxiv.org/abs/2308.12355">Renormalizing Diffusion Models</a>, joint with Jordan Cotler</li>
+        <li><a href="https://arxiv.org/abs/2409.12179">Computational Dynamical Systems</a>, (FOCS 2024), joint with Jordan Cotler
+		<em> We build a bridge bewteen computational complexity theory and smooth dynamical systems theory. We give upper bounds on the computational complexity of Axiom A systems and quantitative complexity bounds for one-dimensional maps, using highly nontrivial structure theory from known results in differentiable dynamical systems. </li>
+	<li><a href="https://arxiv.org/abs/2308.12355">Renormalizing Diffusion Models</a>, joint with Jordan Cotler<br/>
+		<em> We give a precise correspondence between multiscale diffusion models from machine learning
+	and exact renormalization group flows. We explain how to design models which rigorously learn the 
+	RG flow / effective action of a lacctice field theory, and do an initial numerical investigation of this method..</em></li>
         <li><a href="https://arxiv.org/abs/2306.11719">Diffusion with Forward Models: Solving Stochastic Inverse Problems Without Direct Supervision</a> joint with Ayush Tewari, Tianwei Lin, et al.  NeurIPS 2024 Spotlight Paper.</li>
         <li><a href="https://journals.aps.org/prd/abstract/10.1103/PhysRevD.108.025003">Renormalization Group Flow as Optimal Transport (PRL D editors pick)</a><br/>
           <em>This paper gives a variational 
