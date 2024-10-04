@@ -50,6 +50,7 @@
        </ul>
 
         <p>My favorite book is Edmund Spenser's <a href="http://en.wikipedia.org/wiki/The_Faerie_Queene">Faerie Queene</a>. </p>
+	<p> <b> I am on the academic job market this year.</b></p>
 
         
               <h3>Contact</h3>
@@ -63,6 +64,7 @@
       <h3> Mathematics </h3>
         <ul>
 		<li><a href="https://arxiv.org/abs/2405.18370">Cyclotomic Structures in Symplectic Topology</a> <br/> 
+			A video of a talk on this paper can be found <a href="https://player.vimeo.com/video/770954944">here</a>.<br/>
 			<em>This paper defines a genuine p-cyclotomic spectrum which
 				lifts symplectic cohomology. This spectrum should agree
 				with Topological Hochschild Homology of the Fukaya category
