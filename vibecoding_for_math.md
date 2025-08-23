@@ -23,7 +23,7 @@ This is not an essay on the future of mathematics, or on the politics of skill, 
 - Which feels like it is an embodiment of the value systems of human mathematicians.
 
 The slogan I would like to propose is that we should aim to develop tools that do
-<div align="center">
+<div class="center-div">
 *Vibecoding for Mathematics*
 </div>
 
@@ -31,7 +31,7 @@ although this slogan is slightly misleading, because the experience of using suc
 
 Another way to summarize the idea is that what human mathematicians might benefit from is access to a
 
-<div align="center">
+<div class="center-div">
 *sentient, erudite, (slightly psychotic) calculator*
 </div>
 
@@ -39,7 +39,7 @@ in contrast to a model more focused on reducing mathematics to a vast collaborat
 
 Another, more humorous way of articulating this perspective is that 
 
-<div align="center">
+<div class="center-div">
 *researchers interested in developing AI tools for mathematics will have succeeded when they have a larger impact on actual mathematics research than Mathematica has.*[^mathematica]
 </div>
  

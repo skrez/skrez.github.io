@@ -254,6 +254,12 @@ height:1px;
     }
 }
 
+.center-div {
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
 @media print {
     body {
 	padding:0.4in;
