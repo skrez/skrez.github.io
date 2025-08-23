@@ -1,8 +1,7 @@
 # Vibecoding for Mathematics
 
-Quote?
 
-Mathematics is an ancient and infinite game, with rules that appear to be completely precise. The official rules of the game are the rules of logical deduction: A therefore B, and hopefully never NOT A. The game seems to have a completely specified reward function [^1] as one example of a `win condition’, we can take the one achieved by Perelman
+Mathematics is an ancient and infinite game, with rules that appear to be completely precise. The official rules of the game are the rules of logical deduction: A therefore B, and hopefully never NOT A. The game seems to have a completely specified reward function[^1] as one example of a `win condition’, we can take the one achieved by Perelman
 
 *Is every closed 3-manifold with trivial fundamental group is homeomorphic to the standard 3-dimensional sphere, namely, the set of real solutions to*
 
@@ -25,8 +24,8 @@ This is not an essay on the future of mathematics, or on the politics of skill, 
 
 The slogan I would like to propose is that we should aim to develop tools that do
 <div align="center">
-*Vibecoding for Mathematics*<
-/div>
+*Vibecoding for Mathematics*
+</div>
 
 although this slogan is slightly misleading, because the experience of using such a system, unlike the subjective experience associated with vibecoding, is likely to be very mindful.
 
