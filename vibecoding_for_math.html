@@ -22,19 +22,21 @@
 		</header>
 
 		<article>
-	   <h1 id="vibecoding-for-mathematics">Vibecoding for Mathematics</h1>
+<h1 id="vibecoding-for-mathematics">Vibecoding for Mathematics</h1>
 <p>Mathematics is an ancient and infinite game, with rules that appear
 to be completely precise. The official rules of the game are the rules
 of logical deduction: A therefore B, and hopefully never NOT A. The game
 seems to have a completely specified reward function<a href="#fn1"
 class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> as
-one example of a `win condition’, we can take the one achieved by
+one example of a <em>win condition</em>, we can take the one achieved by
 Perelman</p>
 <p><em>Is every closed 3-manifold with trivial fundamental group is
 homeomorphic to the standard 3-dimensional sphere, namely, the set of
 real solutions to</em></p>
+<div class="center-div">
 <p><span
 class="math display"><em>x</em><sup>2</sup> + <em>y</em><sup>2</sup> + <em>z</em><sup>2</sup> + <em>t</em><sup>2</sup> = 1?</span></p>
+</div>
 <p><em>Give a proof or produce a counterexample</em>.</p>
 <p>It is no surprise, then, that mathematics is a tempting challenge for
 AI researchers, who have found great success by finding formulations of
@@ -77,10 +79,11 @@ helpful for accelerating the research of existing human mathematicians,
 and, at the very least, radically improved models or the development of
 new tools and workflows is required. However, very few mathematicians
 seem to doubt that these tools can be made to be helpful for real
-research tasks in the near future (footnote 3), and of course, regarding
-longer timeframes, the disagreement and uncertainty regarding how far
-and in what manner the entire AI research agenda will progress is one of
-the great debates of our historical moment.</p>
+research tasks in the near future <a href="#fn4" class="footnote-ref"
+id="fnref4" role="doc-noteref"><sup>4</sup></a>, and of course,
+regarding longer timeframes, the disagreement and uncertainty regarding
+how far and in what manner the entire AI research agenda will progress
+is one of the great debates of our historical moment.</p>
 <p>This is not an essay on the future of mathematics, or on the politics
 of skill, meaning, cultural power, knowledge, and human significance
 that are implicit in current activity around Artificial Intelligence.
@@ -91,8 +94,8 @@ mathematics research, - In a manner that makes the human mathematicians
 significantly more productive, and - Which the human mathematicians
 enjoy and thus freely adopt the use of, and - Which feels like it is an
 embodiment of the value systems of human mathematicians.</p>
-The slogan I would like to propose is that we should aim to develop
-tools that do
+<p>The slogan I would like to propose is that we should aim to develop
+tools that do</p>
 <div class="center-div">
 <p><em>Vibecoding for Mathematics</em></p>
 </div>
@@ -113,8 +116,8 @@ that</p>
 <div class="center-div">
 <p><em>researchers interested in developing AI tools for mathematics
 will have succeeded when they have a larger impact on actual mathematics
-research than Mathematica has.</em><a href="#fn4" class="footnote-ref"
-id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+research than Mathematica has.</em> <a href="#fn5" class="footnote-ref"
+id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
 </div>
 <p>I’ll aim to describe the tool by describing a workflow that I
 experimented with during the aforementioned conference, which led me to
@@ -160,64 +163,325 @@ should also be able to find a proof of this empirically discovered
 result is for me a paradigmatic example of what we should expect LLMs to
 be able to do in the near future.</p>
 <p>Here was the workflow:</p>
-<pre><code>1.  Write up a short document in LaTeX, defining the relevant notions and providing some context, in a manner that one might do for a human collaborator, and then feeding this document to an LLM as context.
-2.  Test the LLM through conversation regarding its knowledge of the prerequisite concepts (in my case, quaternions, differential forms, J-convexity), and then on its basic understanding of the new mathematical concepts defined in the document.
-3.  Ask the LLM to prove some basic results which you know are true about the relevant notions, and inspect its arguments for `understanding’. Try to `clarify its understanding’ when there are errors. Also ask it to prove some false claims, read what happens, and offer similar clarifications.
-4.  Ask the LLM to investigate a `nontrivial’ question. If it makes a serious claim (i.e. here is a counterexample), follow the maxim that has been widely understood by vibecoding practitioners: Force the AI to write tests.
-    a)  Tests can be numerical, i.e. ``show me that you can write a numerical test to check if a given function is J-convex’’.
-    b)  Tests can also be algebraic, i.e. verifying that some claimed algebraic identity holds. I found that the current LLMs are peculiarly bad at writing such tests, and I’ll expand on this below.
-    c)  At some point, at the current stage of AI capabilities, one is likely to notice that the computer is providing truly nonsensical proofs using cool, high-concept ideas like symmetry which manifestly use none of the actual hypotheses assumed in the paper. Pointing out such errors to the LLM leads it to become tremendously confused. After such an error it is best to opt for a different strategy, as it’s unlikely that the LLM will be able to truly `overcome its own confusion’.
-5.  A productive strategy is to ask the AI to help you write code for experiments which test hypotheses. This may be much faster than writing experiments code on one’s own – learning libraries can take forever, and the `erudition’ of LLMs can save the time it might take to derive, in a standard manner, formulae which make explicit some statements about more abstract mathematical objects (e.g. differential forms, cohomology groups).
-6.  Given experimental outcomes, one can always ask the LLM about the meaning of the experimental outcomes. The LLM might in fact notice that a `counterexample’ is not a counterexample, due to a numerical error in the code! Or might be able to provide a proof of a lemma. Or you might be able to produce a proof of a lemma, once you are confident that the lemma is, in fact, true. 
-7.  Throughout this process, one can run `human-in-the-loop’ cycles, and based on the numerical or symbolic experiments that the AI has assisted with, try to investigate newly hypotheses via the more standard process of human research.</code></pre>
-<p>The document describing the problem setup is here. After the
-experiments above, I now believe that the converse to Lemma XX holds,
-which is real progress on a tiny piece of my research program. Links to
-my conversations with ChatGPT can be found here and here; the generated
-code can be found in these conversations, and the final code that
-resulted is here. In the figures below, I have highlighted instances of
-occurrences of the moments in the workflow described above.</p>
-<p>There are also some obvious basic human-interface challenges
-highlighted in the workflow described above which I imagine can be
-overcome with a rather minimal amount of work. 1. Panes, “please fix the
-error”, and other vibecoding tropes. The experience of using a modern
-vibecoding tool like Cursor (link) is that of hilarious and
-incomprehensible speed. You ask the computer to make you an app, and it
-works — and then when it doesn’t work, you barely think, you just tell
-the computer to FIX IT, and it gets straight back to work for you! It is
-simultaneously exhilirating and mind-numbing to watch the computer go.
-Much of this speed is, of course, a satisfying illusion, due to the many
-bugs that vibe coding can introduce. However, there is no doubt that AI
-models are genuinely helpful coding assistants. The vibecoding community
-has developed many basic tooling insights around these capabilities,
-i.e. chaining models together to tell other models to try to fix errors
-as they pop up, which helps to create a smooth and satisfying
-experience. These ideas can and should be adapted to the setting of
-mathematics research.</p>
-<pre><code>    For example, it would be a huge improvement on the workflow described above to
-
-        - have a multi-pane setup, just as in cursor [figure], where one pane is a conversation with an LLM, and another is a series of code-windows into python or Mathematica or sage, in which the language model writes numerical code or symbolic tests for justifying its claims, and 
-
-        - to have some basic automation around the use of this tool, i.e. to easily move code chunks between panes, and to be able to ask the LLM to ‘fix it’ repeatedly just as one does in a vibecoding setup. 
-
-    In practice, having to do either of the above by hand repeatedly, dramatically decreased the value of the AI capabilities offered by current models for my research. I spent a few hours trying to vibecode a setup implementing the above capabilities, and unfortunately, perhaps due to my lack of expertise, I did not succeed immediately. However, a basic demo seems straightforward to implement.
-
-2.  Language models are bad at writing code for symbolic programming languages like Mathematica or Sage. Math programming is more mindful than software engineering, and math-research tool systems should keep that in mind.
-    This was a consistent issue in the experiment above. There is a tremendous amount of numerical code in python available on the internet. As such, language models are pretty good at writing numerical python code involving matrix manipulations — which is why they were able to write test the converse to Lemma XX. In contrast, their efforts to produce correct symbolic claims of statements beyond some level of complexity were rather abysmal, as were their abilities to generate code that improved on or verified their symbolic claims.
-
-    If you look through the chat, you will see that even in the case of numerical experimentation, I had to carefully inspect each line of the written code in order to get the model to be correct, and to argue with the model, through some mathematical reasoning, in order to eventually get it to fix some obvious mathematical bugs. This contrasts with the goal of the vibecoding experience, in which one tries to `shut off one’s brain’ — in mathematics, one cannot really do this without a formal language verifying various intermediate assertions. As explained in the second part of the essay, it is essential for human practice to not require that all mathematical research is done in the setting of a single `formally verified library of mathematics’, as projects like Lean implicitly suggest one should— mathematics is too dependent on experiment, and on `low-depth’ symbolic statements, to make the required overhead worthwhile for some of the goals that human mathematicians have. Beyond that, mathematicians value the mindful aspect of the subject, and tools which use AI coding assistants as part of a mathematical workflow should be adapted to helping the human mathematician gain a rapid but detailed understanding of the relatively short code snippets that might be generated by such an AI. 
-
-    Going beyond numerical coding, there is very little symbolic code on the internet, and so publicly available language models, at the time of the above experiment (May 2025) were completely incapable of doing something as simple as writing code to verify interesting quaternion matrix identities for which I could give careful proofs of by hand. To be clear, the motivation here is that — LLMs often produce elaborate sequences of symbolic manipulations in order to justify their assertions, and then make subtle mistakes in their reasoning. As such, just as in vibecoding, one should have them write tests that their symbolic assertions are correct, and then verify these `shallow’ symbolic assertions with a verifier. Such a workflow would implement this idea of a `sentient calculator’ alluded to in the introduction, and would fit completely naturally into human mathematical research processes. Why are we, in the 21st century, still doing confusing tensor calculations on paper when doing differential geometry? The computer knows all of these ideas — they are just a bunch of elementary manipulations with matrices and indices! Any IMO gold medalist, and certainly the computer, is better at such computations than I might be. In a just world, the computer should compile the ideas into code, and then test the code, and do the calculations for me. 
-
-    Unfortunately, the ability for models to produce such tests in symbolic languages correctly is currently below the level required to make this capability feasible. Or, at the very least, some clever prompt engineering and workflow design is required, which I do not currently have on hand.
-
-    This phenomenon is completely shocking to me — these are statements that, if I encoded them into Mathematica myself, the system would deterministically verify instantly! It is also eerie, as a mathematician, to look at some Sage code suggesting that some quaternion matrix identity doesn’t work, where one has a very careful human proof that it does. The bugs that AI can introduce are particularly vexing, and it is essential to optimize coding models on this slightly peculiar class of coding tasks in order to give massive value to human mathematics research projects. This is an area where hobbyist machine learning researchers, any AI company, or even a mathematician who decides to get into some ML research, can likely make a significant contribution.
-3.  Integration with formal theorem provers.
-    At this point, there exist AI systems that can produce human-readable solutions to IMO problems [links]. IMO problems are certainly at the level of the tasks that I want solved on a day to day basis in my research, and I doubt that the converse to Lemma XX above is any harder than a difficult IMO problem. Hopefully, the workflow above illustrates how problems motivated by high-level mathematics can often be boiled down to little lemmas that are no more complex than the kinds of problems that we believe AI systems should at this point be able to systematically solve. 
-
-    Thus, the question is — how do we make these new tools useful? Part of the problem is access to the models themselves, but due to the exponential decreases in the costs of ML systems, one imagines that these will be widely available in the next few years. Beyond that, open source models do not do particularly badly on the IMO [link]. Thus, it is a problem of interface design and integration. One would like, in a single tool, in flexibly switch model providers, to easily switch between different verification modalities (numerical tests, symbolic tests, tests in a formal language like lean), in the process of one’s investigations. This is a problem that involves a mixture of ML model engineering and some HCI research.
-4.  Conjoining coding, theorem-proving, and paper writing.
-    As detailed in the second half of this essay, mathematical research involves different kinds of work, all of which can be assisted by artificial intelligence. Transferring data between tools which are not designed for integration can be a hassle, and when one is competing with the fluidity of manipulations on pen and paper — in which all `data transfer’ is instant, because most things are held in the user’s head — the interface presented has to be made quite smooth in order for a human to enjoy using it. The final products of mathematical research — papers — bubble out of agglomerations of these various kinds of work, most of which are unfortunately omitted in the final product (although the omissions may help readability). One could imagine a system that is something like an extension of the ideas around literate programming [links] in which one accumulates mathematical experiments, symbolic claims, little lemmas, carefully formalized definitions, into an elaborate hierarchical digital document, until as a final product, an easily navigable hierarchy of narrative, computer experiment, precise definitions and claims, human-readable proofs, and machine-verified proofs, is presented to the reader. This might lead to a form of mathematical production which genuinely improves on the current situation, which most practitioners find dissatisfying, but have trouble improving on. Writing papers is hard enough for human beings — but perhaps, with AI assistance, the papers we might write could fulfill all the goals that current papers achieve, and then some goals (partial formulation, examples, etc.) that we all wish were more widely available! The project of inventing the mathematics paper of the future [link] is a fascinating experiment in the creation of new human culture. </code></pre>
+<ol type="1">
+<li>Write up a
+<a href="./Example_Problems_that_ML_tools_should_be_better_at.pdf">short
+document</a> in LaTeX, defining the relevant notions and providing some
+context, in a manner that one might do for a human collaborator, and
+then feeding this document to an LLM as context.</li>
+<li>Test the LLM through conversation regarding its knowledge of the
+prerequisite concepts (in my case, quaternions, differential forms,
+J-convexity), and then on its basic understanding of the new
+mathematical concepts defined in the document.</li>
+<li>Ask the LLM to prove some basic results which you know are true
+about the relevant notions, and inspect its arguments for
+<em>understanding</em>. Try to <em>clarify its understanding</em> when
+there are errors. Also ask it to prove some false claims, read what
+happens, and offer similar clarifications.</li>
+<li>Ask the LLM to investigate a <em>nontrivial</em> question. If it
+makes a serious claim (i.e. here is a counterexample), follow the maxim
+that has been widely understood by vibecoding practitioners: Force the
+AI to write tests.
+<ol type="a">
+<li>Tests can be numerical, i.e. “show me that you can write a numerical
+test to check if a given function is J-convex”.</li>
+<li>Tests can also be algebraic, i.e. verifying that some claimed
+algebraic identity holds. I found that the current LLMs are peculiarly
+bad at writing such tests, and I’ll expand on this below.</li>
+<li>At some point, at the current stage of AI capabilities, one is
+likely to notice that the computer is providing truly nonsensical proofs
+using cool, high-concept ideas like symmetry which manifestly use none
+of the actual hypotheses assumed in the paper. Pointing out such errors
+to the LLM leads it to become tremendously confused. After such an error
+it is best to opt for a different strategy, as it’s unlikely that the
+LLM will be able to truly “overcome its own confusion”.</li>
+</ol></li>
+<li>A productive strategy is to ask the AI to help you write code for
+experiments which test hypotheses. This may be much faster than writing
+experiments code on one’s own – learning libraries can take forever, and
+the “erudition” of LLMs can save the time it might take to derive, in a
+standard manner, formulae which make explicit some statements about more
+abstract mathematical objects (e.g. differential forms, cohomology
+groups).</li>
+<li>Given experimental outcomes, one can always ask the LLM about the
+meaning of the experimental outcomes. The LLM might in fact notice that
+a “counterexample” is not a counterexample, due to a numerical error in
+the code! Or might be able to provide a proof of a lemma. Or you might
+be able to produce a proof of a lemma, once you are confident that the
+lemma is, in fact, true.</li>
+<li>Throughout this process, one can run “human-in-the-loop” cycles, and
+based on the numerical or symbolic experiments that the AI has assisted
+with, try to investigate newly hypotheses via the more standard process
+of human research.</li>
+</ol>
+<p>The document describing the problem setup is
+<a href="./Example_Problems_that_ML_tools_should_be_better_at.pdf">here</a>.
+After the experiments above, I now believe that the converse to Lemma 2
+document <em>is actually correct</em>, which <em>went against my
+expectations</em>. For me, this was the <em>first example</em> of an
+AI-assisted research process producing a result relevant to my actual
+research program which went <em>beyond literature search</em>. Links to
+my conversations with ChatGPT can be found
+<a href="https://chatgpt.com/share/68b244a4-f49c-8007-b406-c1acfe7cb356">here</a>
+and
+<a href="https://chatgpt.com/share/68b24509-cd78-8007-8792-221f762210f6">here</a>;
+the generated code can be found in these conversations, and the final
+code that changed my mind about Lemma 2 is
+<a href="./ai_generated_code.html">here</a>. In the figures below, I
+have highlighted instances of occurrences of the moments in the workflow
+described above.</p>
+<p>The o4 model can do standard manipulations with differential
+forms:</p>
+<p><img src="./vibecoding_images/chatgpt_knows_differential_forms.png" class="inline-img" /></p>
+<p>It can also write numerical code pretty well:</p>
+<p><img src="./vibecoding_images/IJK_convexity_numerical_test.png" class="inline-img" /></p>
+<p>The model also quickly writes all kinds of algebraic manipulations
+which appear to prove the statements that I point out to it are provable
+in my document. Here is an apparent counterexample to Lemma 1, which
+feels like it requires some cleverness (<em>caveat: I did not check that
+the model’s argument works!</em>)</p>
+<p><img src="./vibecoding_images/converse_to_lemma_1.png" class="inline-img" /></p>
+<p>And here is a (correct) proof of Lemma 2, which I stated as correct
+in the LaTeX document:</p>
+<p><img src="./vibecoding_images/lemma_2_proof.png" class="inline-img" /></p>
+<p>This looks very impressive, and in many ways it is. Unfortunately, it
+can write equally compelling algebraic manipulations to false
+statements, which you might not notice are erroneous arguments:</p>
+<p><img src="./vibecoding_images/converse_to_lemma_2_fake_proof_1.png" class="inline-img" /></p>
+<p>As a mathematician, however, you are trained to notice characteristic
+ways in which arguments might fail:</p>
+<p><img src="./vibecoding_images/converse_to_lemma_2_fake_proof_1_response.png" class="inline-img" /></p>
+<p>The model seems much better at writing numerical tests than proofs,
+perhaps because of the preponderance of numerical python code on the
+internet. I asked the model to write numerical code to test the converse
+of Lemma 2:</p>
+<p><img src="./vibecoding_images/lemma_2_code_test_initial.png" class="inline-img" /></p>
+<p>This produces several pages of code, any error in which would make
+the test incorrect. Luckily, the model can produce some explanations for
+its code:</p>
+<p><img src="./vibecoding_images/lemma_2_code_test_explaining.png" class="inline-img" /></p>
+<p>These explanations lead, upon careful investigation and some arguing
+with the model, to bug discovery and subsequent bug-fixes:</p>
+<p><img src="./vibecoding_images/lemma_2_code_test_bug_1.png" class="inline-img" /></p>
+<p><img src="./vibecoding_images/lemma_2_code_sigma_eval.png" class="inline-img" /></p>
+<p><img src="./vibecoding_images/lemma_2_code_test_bug_2.png" class="inline-img" /></p>
+<p><img src="./vibecoding_images/lemma_2_code_test_bug_2_fix_1.png" class="inline-img" /></p>
+<p><img src="./vibecoding_images/lemma_2_code_test_bug_2_fix_2.png" class="inline-img" /></p>
+<p>Finally, the after I feel satisfied with my understanding of the
+code, the model produces some code, which has one more bug upon
+evaluation which the model can immediately fix from the error message
+spit out by the python evaluator:</p>
+<p><img src="./vibecoding_images/lemma_2_code_test_final_code.png" class="inline-img" /></p>
+<p><em>Very impressively</em>, when this run then ended up producing a
+candidate counterexample, the model can notice that in fact the
+counterexample was a false positive, due to insufficiently many samples
+taken in the randomized algorithm being used to test for
+IJK-convexity:</p>
+<p><img src="./vibecoding_images/lemma_2_counterexample.png" class="inline-img" /></p>
+<p><img src="./vibecoding_images/lemma_2_counterexample_2.png" class="inline-img" /></p>
+<p>After this, with many samples, no more counterexamples were found! In
+the second notebook linked above, I worked with the model to upgrade the
+code to look for higher-dimensional counterexamples and it found none
+there as well. After this, for the first time, <em>I changed my mind
+about a mathematical question due to a collaboration with an LLM</em>!
+This was a big eureka moment for me.</p>
+<p>After this moment, I was positively feeling the AGI. However, all
+attempts to work with the model to produce a <em>proof</em> of the
+converse of Lemma 2 were absolutely disastrous:</p>
+<p><img src="./vibecoding_images/lemma_2_converse_fake_proofs_begin.png" class="inline-img" /></p>
+<p><img src="./vibecoding_images/lemma_2_converse_fake_proofs_2.png" class="inline-img" /></p>
+<p><img src="./vibecoding_images/lemma_2_converse_fake_proofs_3.png" class="inline-img" /></p>
+<p>The model confidently produces large, complex symbol manipulations,
+which constantly use unjustified claims, often ‘due to symmetry’:</p>
+<p><img src="./vibecoding_images/lemma_2_converse_fake_proofs_3.png" class="inline-img" /></p>
+<p><img src="./vibecoding_images/lemma_2_converse_fake_proofs_4.png" class="inline-img" /></p>
+<p>The model tries to get into fancy math, by using representation
+theory:</p>
+<p><img src="./vibecoding_images/lemma_2_converse_fake_proofs_5.png" class="inline-img" /></p>
+<p>If you are an interested mathematician, do take a look at the chat
+log – it is a fascinating example of the kinds of “characteristic
+errors” that these models make, and the challenges that a human has in
+interpreting what is happening as the model tries to “reason”. If you
+are not a mathematician, it is worth emphasizing that the above
+screenshots are only very short excerpts of a rather extensive
+conversation that I had with the model, where the model constantly
+produced <em>very impressive-looking mathematical formulae</em>, almost
+all of which are difficult to evaluate for correctness, and always ended
+up <em>completely falling apart</em> due to trivial errors in
+reasoning/symbolic manipulation/whatever it is that the model does.</p>
+<p>In the end, all of the model’s attempts to produce a proof <em>fail
+completely</em>, despite an extensive attempt at helping the model to
+think more carefully. I tried, in the second notebook, to get the model
+to write symbolic algebra code to force it to make correct symbolic
+manipulations, and this attempt of mine failed miserably – it was not
+able to consistly generate symbolic algebra code reliably enough for the
+process to be worth debugging. After some additional extensive efforts,
+I decided that the model is good at numerical coding at proving the
+lemma I was interested in, and gave up. I think that a model that can
+(through an interactive conversation) prove the converse to Lemma 2
+(<em>not that I currently have a proof – but the numerics are
+convincing!</em>) would make it into my regular mathematical research
+toolkit, and would significantly change the way that I work
+day-to-day.</p>
+<p>The workflow above immediately suggests some human-interface
+improvements which would make this kind of AI-assisted research much
+more effective:</p>
+<ol type="1">
+<li><p>Panes, “please fix the error”, and other vibecoding tropes. The
+experience of using a modern vibecoding tool like Cursor (link) is that
+of hilarious and incomprehensible speed. You ask the computer to make
+you an app, and it works — and then when it doesn’t work, you barely
+think, you just tell the computer to FIX IT, and it gets straight back
+to work for you! It is simultaneously exhilirating and mind-numbing to
+watch the computer go. Much of this speed is, of course, a satisfying
+illusion, due to the many bugs that vibe coding can introduce. However,
+there is no doubt that AI models are genuinely helpful coding
+assistants. The vibecoding community has developed many basic tooling
+insights around these capabilities, i.e. chaining models together to
+tell other models to try to fix errors as they pop up, which helps to
+create a smooth and satisfying experience. These ideas can and should be
+adapted to the setting of mathematics research.</p>
+<p>For example, it would be a huge improvement on the workflow described
+above to</p>
+<ul>
+<li><p>have a multi-pane setup, just as in cursor [figure], where one
+pane is a conversation with an LLM, and another is a series of
+code-windows into python or Mathematica or sage, in which the language
+model writes numerical code or symbolic tests for justifying its claims,
+and</p></li>
+<li><p>to have some basic automation around the use of this tool,
+i.e. to easily move code chunks between panes, and to be able to ask the
+LLM to ‘fix it’ repeatedly just as one does in a vibecoding
+setup.</p></li>
+<li><p>Both documents linked above were generated in about 2 hours. They
+are quite slow to load. <em>AI assisted mathematics very quickly
+produces large documents, which need tooling to me made
+navigable</em>.</p></li>
+</ul>
+<p>In practice, having to do either of the above by hand repeatedly,
+dramatically decreased the value of the AI capabilities offered by
+current models for my research. I spent a few hours trying to vibecode a
+setup implementing the above capabilities, and unfortunately, perhaps
+due to my lack of expertise, I did not succeed immediately. However, a
+basic demo seems straightforward to implement.</p></li>
+<li><p>Language models are bad at writing code for symbolic programming
+languages like Mathematica or Sage. Math programming is more mindful
+than software engineering, and math-research tool systems should keep
+that in mind. This was a consistent issue in the experiment above. There
+is a tremendous amount of numerical code in python available on the
+internet. As such, language models are pretty good at writing numerical
+python code involving matrix manipulations — which is why they were able
+to write test the converse to Lemma XX. In contrast, their efforts to
+produce correct symbolic claims of statements beyond some level of
+complexity were rather abysmal, as were their abilities to generate code
+that improved on or verified their symbolic claims.</p>
+<p>If you look through the chat, you will see that even in the case of
+numerical experimentation, I had to carefully inspect each line of the
+written code in order to get the model to be correct, and to argue with
+the model, through some mathematical reasoning, in order to eventually
+get it to fix some obvious mathematical bugs. This contrasts with the
+goal of the vibecoding experience, in which one tries to “shut off one’s
+brain” – in mathematics, one cannot really do this without a formal
+language verifying various intermediate assertions. As explained in the
+second part of the essay, it is essential for human practice to not
+require that all mathematical research is done in the setting of a
+single “formally verified library of mathematics”, as projects like Lean
+implicitly suggest one should – mathematics is too dependent on
+experiment, and on “low-depth” symbolic statements, to make the required
+overhead worthwhile for some of the goals that human mathematicians
+have. Beyond that, mathematicians value the mindful aspect of the
+subject, and tools which use AI coding assistants as part of a
+mathematical workflow should be adapted to helping the human
+mathematician gain a rapid but detailed <em>understanding</em> of the
+relatively short code snippets that might be generated by such an
+AI.</p>
+<p>Going beyond numerical coding, there is very little symbolic code on
+the internet, and so publicly available language models, at the time of
+the above experiment (May 2025) were completely incapable of doing
+something as simple as writing code to verify interesting quaternion
+matrix identities for which I could give careful proofs of by hand. To
+be clear, the motivation here is that — LLMs often produce elaborate
+sequences of symbolic manipulations in order to justify their
+assertions, and then make subtle mistakes in their reasoning. As such,
+just as in vibecoding, one should have them write tests that their
+symbolic assertions are correct, and then verify these “shallow”
+symbolic assertions with a verifier. Such a workflow would implement
+this idea of a <em>sentient calculator</em> alluded to in the
+introduction, and would fit completely naturally into human mathematical
+research processes. Why are we, in the 21st century, still doing
+confusing tensor calculations on paper when doing differential geometry?
+The computer knows all of these ideas – they are just a bunch of
+elementary manipulations with matrices and indices! Any IMO gold
+medalist, and certainly the computer, is better at such computations
+than I might be. In a just world, the computer should compile the ideas
+into code, and then test the code, and do the calculations for me.</p>
+<p>Unfortunately, the ability for models to produce such tests in
+symbolic languages correctly is currently below the level required to
+make this capability feasible. Or, at the very least, some clever prompt
+engineering and workflow design is required, which I do not currently
+have on hand.</p>
+<p>This phenomenon is completely shocking to me – these are statements
+that, if I encoded them into Mathematica myself, the system would
+deterministically verify instantly! It is also eerie, as a
+mathematician, to look at some Sage code suggesting that some quaternion
+matrix identity doesn’t work, where one has a very careful human proof
+that it does. The bugs that AI can introduce are particularly vexing,
+and it is essential to optimize coding models on this slightly peculiar
+class of coding tasks in order to give massive value to human
+mathematics research projects. This is an area where hobbyist machine
+learning researchers, any AI company, or even a mathematician who
+decides to get into some ML research, can likely make a significant
+contribution.</p></li>
+<li><p>Integration with formal theorem provers. At this point, there
+exist AI systems that can produce human-readable solutions to IMO
+problems [links]. IMO problems are certainly at the level of the tasks
+that I want solved on a day to day basis in my research, and I doubt
+that the converse to Lemma XX above is any harder than a difficult IMO
+problem. Hopefully, the workflow above illustrates how problems
+motivated by high-level mathematics can often be boiled down to little
+lemmas that are no more complex than the kinds of problems that we
+believe AI systems should at this point be able to systematically
+solve.</p>
+<p>Thus, the question is — how do we make these new tools useful? Part
+of the problem is access to the models themselves, but due to the
+exponential decreases in the costs of ML systems, one imagines that
+these will be widely available in the next few years. Beyond that, open
+source models do not do particularly badly on the IMO [link]. Thus, it
+is a problem of interface design and integration. One would like, in a
+single tool, in flexibly switch model providers, to easily switch
+between different verification modalities (numerical tests, symbolic
+tests, tests in a formal language like lean), in the process of one’s
+investigations. This is a problem that involves a mixture of ML model
+engineering and some HCI research.</p></li>
+<li><p>Conjoining coding, theorem-proving, and paper writing. As
+detailed in the second half of this essay, mathematical research
+involves different kinds of work, all of which can be assisted by
+artificial intelligence. Transferring data between tools which are not
+designed for integration can be a hassle, and when one is competing with
+the fluidity of manipulations on pen and paper — in which all “data
+transfer” is instant, because most things are held in the user’s head —
+the interface presented has to be made quite smooth in order for a human
+to enjoy using it. The final products of mathematical research — papers
+— bubble out of agglomerations of these various kinds of work, most of
+which are unfortunately omitted in the final product (although the
+omissions may help readability). One could imagine a system that is
+something like an extension of the ideas around literate programming
+[links] in which one accumulates mathematical experiments, symbolic
+claims, little lemmas, carefully formalized definitions, into an
+elaborate hierarchical digital document, until as a final product, an
+easily navigable hierarchy of narrative, computer experiment, precise
+definitions and claims, human-readable proofs, and machine-verified
+proofs, is presented to the reader. This might lead to a form of
+mathematical production which genuinely improves on the current
+situation, which most practitioners find dissatisfying, but have trouble
+improving on. Writing papers is hard enough for human beings — but
+perhaps, with AI assistance, the papers we might write could fulfill all
+the goals that current papers achieve, and then some goals (partial
+formulation, examples, etc.) that we all wish were more widely
+available! The project of inventing the mathematics paper of the future
+[link] is a fascinating experiment in the creation of new human
+culture.</p></li>
+</ol>
 <p>I hope that these desiderata are helpful guidelines for researchers
 interested in this problem. Personally, a tool that successfully
 addressed even a few of the points above would become a daily assistant
@@ -238,7 +502,7 @@ community in a way that is generally agreed upon to be helpful would be
 a significant and widely celebrated achievement. I hope that this is a
 compelling motivator for AI researchers, designers, and computer
 hobbyists to work with mathematicians on the design of such tools.</p>
-<p>—–</p>
+<hr />
 <p>There are some essential features of the workflow articulated above
 that exemplify broader principles which assistants for mathematical work
 might embody. In the rest of this essay, I want to highlight some
@@ -246,7 +510,12 @@ essential mathematical values which any toolmaker should keep in mind
 when working on their design. These are not widely understood outside of
 the math world, but I think they are essential to understand the problem
 at hand.</p>
-<pre><code>1.  Mathematicians spend much of their time playing with mathematical objects.</code></pre>
+<details>
+<summary>
+Mathematicians spend much of their time playing with mathematical
+objects.
+</summary>
+<p>
 <p>Often, one might think of mathematicians as spending their time
 verifying the correctness of abstruse sequences of logical statements,
 or alternatively, imbibing massive quantities of caffeine and generating
@@ -264,32 +533,32 @@ of mathematical proofs themselves.</p>
 <p>To explain this via example, we can go back to the problem in the
 very beginning of the essay: the Poincare conjecture. An essential
 contribution of Perelman to his proof of the Poincare conjecture was the
-introduction of
-<code>entropy-type estimates’ for the Ricci flow. Ricci flow is a flow on geometric spaces that is supposed to</code>smooth
-them out’; the idea is that if you run the Ricci flow on something that
-has trivial fundamental group, then hopefully one can prove that the
-Ricci flow smooths out the geometry until the final geometry is that of
-an actual 3-dimensional sphere, and so the original space must have been
-topologically a 3-dimensional sphere to begin with. [Ricci flow figure.]
-Up to extremely interesting technicalities, this turns out to work, but
-the proof is difficult because the Ricci flow is a nonlinear equation,
-and so one needs ways of controlling its long-time behavior to show that
-no particularly bad behavior occurs that messes up the proof. In order
-to find the a-priori estimates which control the long-time behavior of
-the Ricci flow, the meta-mathematical principle that seems to have been
-followed by Perelman is that: the diffusion of heat is underlaid by a
-probabilistic phenomenon (Brownian motion), and so is controlled by
-quantities related to the probability distribution of particles. The
-most important such quantity is the entropy. The fact that entropy
-decreases under heat flow was known to Gibbs, but only fully exploited
-by researchers in optimal transport in the late 90s and early 2000s.
-Perelman’s insight followed the (previously known) analogy that Ricci
-flow is like the heat flow, but instead of being a flow of probability
-distributions, it is a flow of metrics on manifolds (or, to make the
-analogy more precise, for probability distributions on an unspecified
-metric space, i.e. a flow through the space of metric-measure spaces) –
-and as such, should be similarly controlled by an appropriate
-entropy-type quantity. [Entropy. Perelman Entropy.]</p>
+introduction of <em>entropy-type estimates</em> for the Ricci flow.
+Ricci flow is a flow on geometric spaces that is supposed to <em>smooth
+them out</em>; the idea is that if you run the Ricci flow on something
+that has trivial fundamental group, then hopefully one can prove that
+the Ricci flow smooths out the geometry until the final geometry is that
+of an actual 3-dimensional sphere, and so the original space must have
+been topologically a 3-dimensional sphere to begin with. [Ricci flow
+figure.] Up to extremely interesting technicalities, this turns out to
+work, but the proof is difficult because the Ricci flow is a nonlinear
+equation, and so one needs ways of controlling its long-time behavior to
+show that no particularly bad behavior occurs that messes up the proof.
+In order to find the a-priori estimates which control the long-time
+behavior of the Ricci flow, the meta-mathematical principle that seems
+to have been followed by Perelman is that: the diffusion of heat is
+underlaid by a probabilistic phenomenon (Brownian motion), and so is
+controlled by quantities related to the probability distribution of
+particles. The most important such quantity is the entropy. The fact
+that entropy decreases under heat flow was known to Gibbs, but only
+fully exploited by researchers in optimal transport in the late 90s and
+early 2000s. Perelman’s insight followed the (previously known) analogy
+that Ricci flow is like the heat flow, but instead of being a flow of
+probability distributions, it is a flow of metrics on manifolds (or, to
+make the analogy more precise, for probability distributions on an
+unspecified metric space, i.e. a flow through the space of
+metric-measure spaces) – and as such, should be similarly controlled by
+an appropriate entropy-type quantity. [Entropy. Perelman Entropy.]</p>
 <p>Thus, a researcher may start with an imprecise but highly structured
 analogical framework which synthesizes a large collection of
 mathematical intuitions and phenomena into one supra-formal gestalt, and
@@ -301,80 +570,112 @@ Ricci flow? This involves play: experimenting with formulae,
 symbolically describing relations between various abstract geometric
 objects, exploring phenomena (in simple examples which can be
 calculated), until one develops enough intuition to finally write down a
-`magic’ formula which somehow, via a comparatively short sequence of
-logical steps, ends up controlling some potentially chaotic or
+<em>magic formula</em> which somehow, via a comparatively short sequence
+of logical steps, ends up controlling some potentially chaotic or
 unknowable nonlinear object which is the focus of one’s interest (for
 the Poincare conjecture, this is the Ricci flow).</p>
 <p>Thus the proof is only the final outcome of a rich and intuitive,
 formal-and-informal process, and much of what mathematicians discuss and
 aim to communicate is the mental and experiential tooling needed to
 navigate this process. The communicated proof serves, first, as a
-demonstration that the process was not `faulty’, and second, as a spare
+demonstration that the process was not “faulty”, and second, as a spare
 collection of signposts for those interested in following along the
 researcher’s path through the mathematical abyss.</p>
 <p>I would like to argue that the tooling that mathematicians are
 actually most interested in is tooling that vividly accelerates the
 experimental process indicated above.</p>
-<p>The experimental process might involve a fluid interplay of: rather
+The experimental process might involve a fluid interplay of: rather
 abstract symbolic calculations in a symbolic language designed on the
 fly for the problem at hand; numerical experiments or visualization
 exercises which give confidence to the researcher that certain claims
 are true, which help the formulation of definitions or key lemmata;
-short, lightweight nearly-formal proofs of `little lemmas’ which are the
+short, lightweight nearly-formal proofs of “little lemmas” which are the
 keys to make some big argument go, and which articulate small and
 helpful truths about the world; and an architectural process via which
 definitions and theorem statements are designed so that one can see, in
 one mental sweep, the structure of the entire argument, in order to make
 it possible to be confident that the whole argument, with its zillions
 of moving parts, is in fact perfectly correct because it is modular,
-elegant, clean, and interpretable. <a href="#fn5" class="footnote-ref"
-id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
-<pre><code>2.  Mathematicians are often concerned with finding and articulating the right concepts, statements, definitions, and beliefs, rather than with the correctness of any particular claim.</code></pre>
+elegant, clean, and interpretable. <a href="#fn6" class="footnote-ref"
+id="fnref6" role="doc-noteref"><sup>6</sup></a>
+</details>
+<br/>
+<details>
+<summary>
+Mathematicians are often concerned with finding and articulating the
+right concepts, statements, definitions, and beliefs, rather than with
+the correctness of any particular claim.
+</summary>
+<p>
 <p>This assertion may come as a surprise to non-mathematicians: after
 all, aren’t we trying to prove Famous Conjectures? Indeed, we are — but
 the solution of conjectures is (in my view, which I do not think is
 wholly controversial) a way of demonstrating the power of one’s ideas,
-and of keeping an
-<code>objective’ measure of progress.  The conceptual artifacts that are most valued are really those that empower the synthetic process-cycle of experiment, conjecture, and proof. An isolated claim, even of an</code>important’
-statement, is far less helpful for the acceleration of the process-cycle
-than the wealth of intuitions, conceptual artifacts,
-<code>tools’, and</code>objects’ produced as a byproduct of the process.
-Of course, there are certain statements that are highly prized — think,
-for example, of the Riemann hypothesis — because it is known that many
-different
-<code>interesting’ claims follow from a single such statement. Even in those cases, however, the hope is always that the proof of such a prize statement will lead to new structures that accelerate the process-cycle in many new, unexpected settings. For example, one hopes that the Riemann hypothesis is proven by the development of appropriate cohomology theory associated to systems of Diophantine equations, just as Riemann hypothesis</code>for
-finite fields’ (link) was proven by the creation of the etale cohomology
-theory. The reason for such a desire is that one is really interested in
-all phenomena, which are usually interrelated, and one hopes that the
-tool used to solve a famous problem clarifies our understanding of all
+and of keeping an “objective” measure of progress. The conceptual
+artifacts that are most valued are really those that empower the
+synthetic process-cycle of experiment, conjecture, and proof. An
+isolated claim, even of an “important” statement, is far less helpful
+for the acceleration of the process-cycle than the wealth of intuitions,
+conceptual artifacts, “tools”, and “objects” produced as a byproduct of
+the process. Of course, there are certain statements that are highly
+prized — think, for example, of the Riemann hypothesis — because it is
+known that many different “interesting” claims follow from a single such
+statement. Even in those cases, however, the hope is always that the
+proof of such a prize statement will lead to new structures that
+accelerate the process-cycle in many new, unexpected settings. For
+example, one hopes that the Riemann hypothesis is proven by the
+development of appropriate cohomology theory associated to systems of
+Diophantine equations, just as Riemann hypothesis “for finite fields”
+(link) was proven by the creation of the etale cohomology theory. The
+reason for such a desire is that one is really interested in all
+phenomena, which are usually interrelated, and one hopes that the tool
+used to solve a famous problem clarifies our understanding of all
 related phenomena — because usually, it is hard to prove something hard
 without a new idea. Thus, for example, etale cohomology revolutionized
 our understanding of many other questions about the structure of the
 solutions sets to of systems of polynomial equations over finite fields,
 even having a significant impact on the representation theory of finite
-groups. A <code>direct’ or</code>elementary’ proof of the Riemann
-hypothesis, which can be stated as some odd fact in complex analysis,
-via some clever contour integral manipulations, would be deeply
-fascinating, but there is a chance (!) that it might not lead to much
-more clarity on any of the zillions of other questions we have about
-number theory.</p>
+groups. A “direct” or “elementary” proof of the Riemann hypothesis,
+which can be stated as some odd fact in complex analysis, via some
+clever contour integral manipulations, would be deeply fascinating, but
+there is a chance (!) that it might not lead to much more clarity on any
+of the zillions of other questions we have about number theory.</p>
 <p>As such, without integration into the process-cycle of mathematical
-<code>understanding’, even a perfect oracle which can produce elaborate non-conceptual but formally correct proofs of arbitrary correct mathematical claims would not obviously</code>end’
-human mathematical practice. Indeed, without a conceptual toolkit, would
-be difficult even to
-<code>ask the right questions’ to the oracle. We will soon be able to test this claim directly: a weak version of such an oracle is now available in the example of the IMO solvers produced by Deepmind; yet, even if this solver was released tomorrow for free use by the mathematical community [^5], without a lot of thought given to human-computer-interface design and to methodology, this tool would be much less useful than a general IMO-level undergraduate research assistant to most human researchers. The development of tools around</code>proof
-interpretability’,
-<code>literate proof-writing’, are plausibly just as important as research problems in</code>AI
-for mathematics’ as the improv rement of the capabilities of underlying
-`formal proof oracles’ themselves.</p>
-<p>The benchmark of `does this tool accelerate my research as much as a
-very bright undergraduate would’ is being carefully tracked by the
+“understanding”, even a perfect oracle which can produce elaborate
+non-conceptual but formally correct proofs of arbitrary correct
+mathematical claims would not obviously “end” human mathematical
+practice. Indeed, without a conceptual toolkit, would be difficult even
+to “ask the right questions” to the oracle. We will soon be able to test
+this claim directly: a weak version of such an oracle is now available
+in the example of the IMO solvers produced by Deepmind; yet, even if
+this solver was released tomorrow for free use by the mathematical
+community <a href="#fn7" class="footnote-ref" id="fnref7"
+role="doc-noteref"><sup>7</sup></a>, without a lot of thought given to
+human-computer-interface design and to methodology, this tool would be
+much less useful than a general IMO-level undergraduate research
+assistant to most human researchers. The development of tools around
+“proof interpretability”, “literate proof-writing”, are plausibly just
+as important as research problems in <em>AI for mathematics</em> as the
+improvrement of the capabilities of underlying models themselves.</p>
+The benchmark of “does this tool accelerate my research as much as a
+very bright undergraduate would” is being carefully tracked by the
 entire mathematics community, and success on this benchmark cannot be
 faked or questioned, in contrast to many other possible benchmarks
 trying to evaluate the success of AI at mathematical reasoning. We turn
-to this point next, in a slightly circuitous manner.</p>
-<pre><code>3.  An essential part of the skill of a mathematician is not erudition or formal symbolic trickery, but is the ability to extract the little piece of elementary mathematics that underpins much more complex mathematical phenomena, and then by understanding/solving the elementary problem (or a sequence of such), radically changing the scope of accessible statements and claims. </code></pre>
-<p>As an example, one can take `homological algebra’, the formal
+to this point next, in a slightly circuitous manner.
+</details>
+<br/>
+<details>
+<summary>
+An essential part of the skill of a mathematician is not erudition or
+formal symbolic trickery, but is the ability to extract the little piece
+of elementary mathematics that underpins much more complex mathematical
+phenomena, and then by understanding/solving the elementary problem (or
+a sequence of such), radically changing the scope of accessible
+statements and claims.
+</summary>
+<p>
+<p>As an example, one can take “homological algebra”, the formal
 mathematical content of which boils down to a collection of definitions
 of almost comical formality and generality, together with a large
 collection of elementary arguments in the setting of these definitions.
@@ -387,7 +688,7 @@ algebra, one should simply buy a textbook and prove all the theorems
 without reading any of the proofs, and he wrote a textbook with this
 methodology in mind. (Link.)</p>
 <p>The value of homological algebra is that, in a very general manner,
-it allows a researcher to `soften up’ many different mathematical
+it allows a researcher to “soften up” many different mathematical
 objects (whether of algebraic, geometric, or computational nature — what
 is the difference?) of much greater complexity than a triangle, and
 reason about them in a manner that engages an impressionistic collection
@@ -401,7 +702,7 @@ effect of the universal application of these utterly elementary claims
 about high-dimensional triangles on the structure of current
 mathematical practice.</p>
 <p>The most important such constellations of elementary statements are
-repackaged, almost like in software engineering, into `machines’ — for
+repackaged, almost like in software engineering, into “machines” — for
 homological algebra, this ends up leading to fancy ideas like operads,
 infinity-category theory, and homotopy theory. These high-concept,
 high-status repackagings are the focus of tremendous fascination
@@ -412,14 +713,14 @@ structure of the proofs), thus limiting or slowing down their
 mathematical development.</p>
 <p>By using these repackagings of elementary arguments, one can quickly
 leap from one logical statement down a wormhole to another one, thus
-<code>gluing together’ a collection of</code>machines’ (just as in
-software engineering, much of which consists of writing and organizing
-glue-code for existing libraries) to produce an answer to a
-<code>sophisticated’ mathematical statement. This kind of</code>gluing’
-requires a lot of erudition and awareness of the literature, and this is
-something that current machine-learning models excel at. Erudition,
-however, is only one part of the skillset of a mathematician, and by far
-not the highest-`status’ skill.</p>
+“gluing together” a collection of “machines” (just as in software
+engineering, much of which consists of writing and organizing glue-code
+for existing libraries) to produce an answer to a “sophisticated”
+mathematical statement. This kind of “gluing” requires a lot of
+erudition and awareness of the literature, and this is something that
+current machine-learning models excel at. Erudition, however, is only
+one part of the skillset of a mathematician, and by far not the
+highest-status skill.</p>
 <p>The Frontier-Math benchmarks, designed by Epoch AI and paid for by
 OpenAI (footnote: see these links for the relevant funding controversy,
 which may or may not be of any importance depending on your beliefs
@@ -429,14 +730,22 @@ a sophisticated mathematical statement. The recent success of LLM-based
 models on these benchmarks is responsible for part of the refocusing of
 the attention of the mathematics community on progress in artificial
 intelligence. In my estimation, there is a widely-shared sense that the
-models, because they have
-<code>read all existing literature’, are reasonably capable of gluing together such mathematical machines in order to produce the resulting numerical answers. Indeed, the models can be thought of as being impressive in their erudition! Yet, it seems possible that models might succeed in beating these “significant” benchmarks without having any significant effect on mathematical practice or research output. There is certainly some collection of interesting statements which should be accessible through a more systematic literature search, but there is an implicit belief that only a somewhat limited range of statements can be understood by</code>straightforwardly
-gluing together existing tools’. The straightforward gluing is
-considered to be trivial, even if it may be quite complex. This belief
-plays into how mathematicians value problems which are accessible via
-such methods. That is, in some sense, problems of this kind are problems
-that we, as a species, have `already solved’ — even though we may not
-know it yet.</p>
+models, because they have “read all existing literature”, are reasonably
+capable of gluing together such mathematical machines in order to
+produce the resulting numerical answers. Indeed, the models can be
+thought of as being impressive in their erudition! Yet, it seems
+possible that models might succeed in beating these “significant”
+benchmarks without having any significant effect on mathematical
+practice or research output. There is certainly some collection of
+interesting statements which should be accessible through a more
+systematic literature search, but there is an implicit belief that only
+a somewhat limited range of statements can be understood by
+“straightforwardly gluing together existing tools”. The straightforward
+gluing is considered to be trivial, even if it may be quite complex.
+This belief plays into how mathematicians value problems which are
+accessible via such methods. That is, in some sense, problems of this
+kind are problems that we, as a species, have “already solved” — even
+though we may not know it yet.</p>
 <p>The problems and solutions that are most valued by the math community
 are those which we do not know how to solve, and for which a solution
 “requires” what might be agreed upon to be a “radically new idea”. The
@@ -449,7 +758,7 @@ gossiping about academic politics and complaining about life. The bar is
 very high, and many impressive variations on existing ideas do not pass
 the secret expectations held privately in the hearts of many
 researchers.</p>
-<p>One might think of a successful human mathematical researcher as
+One might think of a successful human mathematical researcher as
 inhabiting the opaque and inarticulable boundary between erudite
 mathematics and elementary mathematics. The former is accessible via LLM
 based “contextual literature search”; the latter is accessible via
@@ -467,8 +776,15 @@ the past millennia of cross-cultural human mathematical practice. You
 know that your math, or your tool, is good, when it becomes part of the
 air that mathematicians breathe. The analogy between a mathematical
 machine (like homological algebra) and a computer machine (like
-Mathematica) can help to clarify what success really looks like.</p>
-<pre><code>4.  Mathematical values center human understanding, and even human joy, as the purpose of the activity.</code></pre>
+Mathematica) can help to clarify what success really looks like.
+</details>
+<br/>
+<details>
+<summary>
+Mathematical values center human understanding, and even human joy, as
+the purpose of the activity.
+</summary>
+<p>
 <p>The experience of undergraduates studying mathematics can feel like a
 slog, or even like torture. Senior mathematicians can complain of
 loneliness, intellectual exhaustion, and a lack of social or financial
@@ -504,7 +820,7 @@ of mining long streams of uninterpretable computer-generated arguments
 for insights. In such worlds, which humans might continue to do
 mathematics, and what possibilities might be lost by the inability for
 humans to motivate themselves to participate in this activity?</p>
-<p>Part of the reason mathematicians leave human mathematics is because
+Part of the reason mathematicians leave human mathematics is because
 other human mathematicians do not do their mathematics in a way that
 makes it as fun for other humans to interact with as the other humans
 might want it to be. What might mathematicians enjoy about doing
@@ -512,13 +828,22 @@ mathematics in an AI-assisted world in the next 5, 10, 50 years? There
 is a question of why this ancient human practice has value to human
 societies in a changing world. Nonetheless, if one wants to have any
 continuity with the current form of practice that one calls
-`mathematics’ as the world transitions to a world where artificial
-intelligence is plentiful, it is essential to focus on this core
-principle driving the human practice, and to understand how it informs
-what the humans actually do. Beyond that, if you want to learn from the
-humans and to have them adopt your methods, they will happily do it if
-the experience of doing so makes them have fun.</p>
-<pre><code>4.  Essential claims about high-level concepts can (often) be reduced to precise formal claims about symbolic manipulations and numerical phenomena, without requiring a massive supporting infrastructure of libraries and formal arguments.</code></pre>
+<em>mathematics</em> as the world transitions to a world where
+artificial intelligence is plentiful, it is essential to focus on this
+core principle driving the human practice, and to understand how it
+informs what the humans actually do. Beyond that, if you want to learn
+from the humans and to have them adopt your methods, they will happily
+do it if the experience of doing so makes them have fun.
+</details>
+<br/>
+<details>
+<summary>
+Essential claims about high-level concepts can (often) be reduced to
+precise formal claims about symbolic manipulations and numerical
+phenomena, without requiring a massive supporting infrastructure of
+libraries and formal arguments.
+</summary>
+<p>
 <p>Software engineers are used to invoking massive libraries based on
 millions of lines of code in order to do a basic task like drawing some
 text on a screen. In mathematics, we often use theorems and definitions
@@ -528,20 +853,25 @@ lines of code supporting almost any software engineering tasks —
 although, if these materials (e.g. textbooks on functional analysis)
 were to be expanded into a formal theorem proving language, they might
 end up as large as some software libraries. [Footnote: One thing we may
-find out in the next few years is how large this
-<code>mathematical codebase’ might be. In some cases we already know; the number of lines of code needed to have computers make sense of the formal (recent) notion of a perfectoid space is much smaller than that needed to encode a very simple web browser. [link] ] However, in contrast to software engineering, while working on proofs involving fancy concepts, mathematicians are constantly going</code>down
-to the bare metal’, i.e. to elementary symbol manipulations,
-combinatorial arguments, and statements about functions and numbers.
-This is in part because of point 3 above, and in part because of point
-5: mathematics, seen as a software library, is far more optimized for
-fun than software is, so it is designed to avoid all the boring (but
-essential!) parts of engineering. If mathematics were a programming
-language, then all types would be assumed to be auto-convertible in the
-mind of the mathematical user, and all glue code would be imagined to be
-automatically generated (because it is `trivial’, see 3 again).
-Contemporary mathematical proof tries to occupy a productive place in
-the ambiguous boundary between the logically formal but boring world of
-software, and the fluid and imprecise world of the human intuition!</p>
+find out in the next few years is how large this “mathematical codebase”
+might be. In some cases we already know; the number of lines of code
+needed to have computers make sense of the formal (recent) notion of a
+perfectoid space is much smaller than that needed to encode a very
+simple web browser. [link] However, in contrast to software engineering,
+while working on proofs involving fancy concepts, mathematicians are
+constantly going “down to the bare metal”, i.e. to elementary symbol
+manipulations, combinatorial arguments, and statements about functions
+and numbers. This is in part because of point 3 above, and in part
+because of point 5: mathematics, seen as a software library, is far more
+optimized for fun than software is, so it is designed to avoid all the
+boring (but essential!) parts of engineering. If mathematics were a
+programming language, then all types would be assumed to be
+auto-convertible in the mind of the mathematical user, and all glue code
+would be imagined to be automatically generated (because it is
+“trivial”, see point 3 again). Contemporary mathematical proof tries to
+occupy a productive place in the ambiguous boundary between the
+logically formal but boring world of software, and the fluid and
+imprecise world of the human intuition!</p>
 <p>Because of this, by design, it is far easier project a mathematical
 statement to something elementary than it is to project a line of
 software to some flips of a transistor or some manipulations of numbers.
@@ -566,26 +896,26 @@ Cherednick’s Double Affine Hecke Algebras. [Figure. Cherednik, in his
 bible on the DAHA, argues that it is much easier to produce abstract
 mathematics than to produce truly new concrete mathematics.]</p>
 <p>Thus, by design, mathematicians can often utilize formal methods
-involving a ``shallow’’ infrastructure in order to work with
-mathematical notions which might require the equivalent of a massive
-software stack in order to formalize in a formal language. In a sentence
-or two, some sophisticated claim might boil down to a fact about
-matrices. This is illustrated in the workflow I described above, where
-various notions coming out of a fairly high-concept project related to
-new Floer-theoretic invariants boiled down to some matrix identities,
-which the computer could write code for. Someone from a software
-engineering background, if given the prompt I gave to o4, might try to
-embark on a long project to first develop a library formalizing
-differential geometry. [Footnote. Indeed, at the IAS conference where I
-tested this workflow, someone thought about doing just that.] But all
-this infrastructure is, to first and to second order, irrelevant for the
-statement at hand. This is a gap between what software engineers may
-believe mathematical practice is about, and what mathematics in practice
-actually is. Language models, having observed a wider range of human
-text-based behaviors than any human can, know that better than most
-humans do; if anything, they are too aggressive about the simplifying
-assumptions they make when asked to boil a mathematical statement down
-into something concretely testable.</p>
+involving a “shallow” infrastructure in order to work with mathematical
+notions which might require the equivalent of a massive software stack
+in order to formalize in a formal language. In a sentence or two, some
+sophisticated claim might boil down to a fact about matrices. This is
+illustrated in the workflow I described above, where various notions
+coming out of a fairly high-concept project related to new
+Floer-theoretic invariants boiled down to some matrix identities, which
+the computer could write code for. Someone from a software engineering
+background, if given the prompt I gave to o4, might try to embark on a
+long project to first develop a library formalizing differential
+geometry. <a href="#fn8" class="footnote-ref" id="fnref8"
+role="doc-noteref"><sup>8</sup></a> But all this infrastructure is, to
+first and to second order, irrelevant for the statement at hand. This is
+a gap between what software engineers may believe mathematical practice
+is about, and what mathematics in practice actually is. Language models,
+having observed a wider range of human text-based behaviors than any
+human can, know that better than most humans do; if anything, they are
+too aggressive about the simplifying assumptions they make when asked to
+boil a mathematical statement down into something concretely
+testable.</p>
 <p>Sometimes, mathematicians introduce hugely incomputable notions into
 their arguments, i.e. uncomputable numbers (which are required for
 limits to work the way we want them to, which in turn is quite useful
@@ -594,7 +924,7 @@ algorithms) or the very infinite chain complexes computing the
 aforementioned etale cohomology groups (which then turn out, in many
 cases, to be easily computable through some abstract comparison theorem,
 and then imply all kinds of empirically testable number-theoretic
-claims, which may serve as particularly compelling `evidence’ that the
+claims, which may serve as particularly compelling “evidence” that the
 proofs about etale cohomology are correct — it is hard to <em>guess</em>
 so many correct statements!). In all these cases, what is valued is the
 eventual bottoming-out of these uncomputable notions into concrete
@@ -602,13 +932,20 @@ computational realities. Moreover, the experimental data coming in
 (e.g. of computations of various abstruse quantities in homotopy theory)
 heavily motivates the highly incomputable notions that end up being
 defined and studied.</p>
-<p>In order to keep the fluidity of mathematical practice, it is
-important not to overburden tools for mathematical research with too
-many of the infrastructural expectations of software development
-practice. Doing so runs the risk of failing to support, or even harming,
-certain valuable forms of human mathematical activity which can proceed
-much faster than any completely systematic approach.</p>
-<pre><code>5.  Human proofs and symbolic calculations are analogous to tests in software engineering. </code></pre>
+In order to keep the fluidity of mathematical practice, it is important
+not to overburden tools for mathematical research with too many of the
+infrastructural expectations of software development practice. Doing so
+runs the risk of failing to support, or even harming, certain valuable
+forms of human mathematical activity which can proceed much faster than
+any completely systematic approach.
+</details>
+<br/>
+<details>
+<summary>
+Human proofs and symbolic calculations are analogous to tests in
+software engineering.
+</summary>
+<p>
 <p>Any discussion of different concepts of proof probably must refer to
 Lakatos’s [link]. This essay illustrates the essential role that
 interpretation has in the notion of a proof. There is no doubt that a
@@ -657,7 +994,7 @@ proofs of ‘little lemmas’ in an integrated manner with a human guided
 research agenda — a human, navigating an area of mathematics, makes
 lemmatizable claims, formalizes them in a formal language (possibly with
 AI assistance), and then an uninterpretable formal proof might help the
-human to change their confidence in what kinds of `nearby’ statements
+human to change their confidence in what kinds of “nearby” statements
 are true or false. Better yet, an interpretable proof might change the
 human’s whole perspective on the subject. An interpretable proof is a
 test of the reader’s understanding of the situation; another reason for
@@ -665,15 +1002,24 @@ why AI-based proof generators, to be truly useful, must be able to
 sometimes produce human-interpretable arguments. (To see the difference
 between a readable proof and an unreadable proof, compare the Google IMO
 submission [link] with the Open AI one [link].)</p>
-<p>There is not much of a gap between a small lemma and a claim about a
+There is not much of a gap between a small lemma and a claim about a
 symbolic system, i.e. a symbolic manipulation. As explained in the
-previous point, very `shallow’ symbolic assertions can be at the core of
+previous point, very “shallow” symbolic assertions can be at the core of
 very deep mathematics, or can test the correctness of propositions about
 the latter. This is another point to keep in mind when thinking about
 which AI capabilities might be most helpful for impacting mathematics
 research that humans might value, and is part of what explains
-Mathematica’s significant impact on research.</p>
-<pre><code>6. Informal, symbolic `techniques’ endowed with a rich set of associations and intuitions can be just as important as formal proofs, and indeed can significantly outrank formal proofs in their mathematical importance.</code></pre>
+Mathematica’s significant impact on research.
+</details>
+<br/>
+<details>
+<summary>
+Informal, symbolic <em>techniques</em> endowed with a rich set of
+associations and intuitions can be just as important as formal proofs,
+and indeed can significantly outrank formal proofs in their mathematical
+importance.
+</summary>
+<p>
 <p>To see this point made most vividly, one can turn to the example of
 the existence of the theoretical physics community. Mathematics used to
 refer to a much larger tent: before some point around 1920-1950, there
@@ -697,28 +1043,32 @@ realm of complete mathematical formalizability, even at the informal
 level that human mathematicians expect; and in part, it is important
 because this method has often led to revolutions in pure mathematics,
 for example, in my field, symplectic geometry, with the initial
-discovery and exploration of ``mirror symmetry’’. It turns out, through
+discovery and exploration of “mirror symmetry”. It turns out, through
 experiment, that motivated symbolic manipulations coupled to grounded
 computational experiments give theorem-proving a run for its money!</p>
 <p>More shockingly yet, it is still possible to be something of a
-<code>prophet’ in relatively recent mathematical practice. One vivid example of this kind of thing is Jack Morava’s work on chromatic homotopy theory, which used various highly symbolic associations between certain algebraic structures at different levels of mathematical abstraction to</code>predict’
-a series of massive organizing principles for the structure of homotopy
-theory, which were then later established by a large number of different
-researchers, and have since become one of the basic touchstones of the
-subject. Part of this
-<code>ideology’ involves expanding one’s basic concept of the idea of a</code>number’
-— in Morava’s world, there are extra
-<code>prime numbers’ interpolating between each prime number and the</code>prime
-at infinity’ — and consequently, it has taken a long time for this
-nearly-ridiculous idea to diffuse to the rest of mathematics, and (in
-accordance with the earlier points of this essay) the diffusion has only
-occurred as the underlying tools have found
-<code>real applications’ to the questions of interest to researchers in other areas. A particularly interesting question, I think is whether AI tools might help with</code>mathematical
-prophecy’: whether there is a tool that could enable an unknown Morava
-of the future to make ten equally-significant discoveries, though some
-rapid iteration of symbolic and experimental mathematical methods.</p>
-<p>In practice, a significant part of the actual work of mathematicians
-can look something like doing theoretical physics-like ‘formal-informal’
+“prophet” in relatively recent mathematical practice. One vivid example
+of this kind of thing is Jack Morava’s work on chromatic homotopy
+theory, which used various highly symbolic associations between certain
+algebraic structures at different levels of mathematical abstraction to
+“predict” a series of massive organizing principles for the structure of
+homotopy theory, which were then later established by a large number of
+different researchers, and have since become one of the basic
+touchstones of the subject. Part of this “ideology” involves expanding
+one’s basic concept of the idea of a “number” — in Morava’s world, there
+are extra “prime numbers” interpolating between each prime number and
+the “prime at infinity” — and consequently, it has taken a long time for
+this nearly-ridiculous idea to diffuse to the rest of mathematics, and
+(in accordance with the earlier points of this essay) the diffusion has
+only occurred as the underlying tools have found “real applications” to
+the questions of interest to researchers in other areas. A particularly
+interesting question, I think is whether AI tools might help with
+“mathematical prophecy”: whether there is a tool that could enable an
+unknown Morava of the future to make ten equally-significant
+discoveries, though some rapid iteration of symbolic and experimental
+mathematical methods.</p>
+In practice, a significant part of the actual work of mathematicians can
+look something like doing theoretical physics-like ‘formal-informal’
 calculations in various temporary made-up languages which are
 tailor-built to investigate whatever phenomenon the mathematician is
 trying to investigate. It is an essential design question of how to
@@ -729,7 +1079,9 @@ most influential mathematical work seems to straddle all the styles of
 mathematical activity — the experimental, the symbolic-calculational,
 and the proof-based approaches — and designing around this process is a
 question which brings any designer into contact with a peculiar and
-powerful part of the human psychological capacity.</p>
+powerful part of the human psychological capacity.
+</details>
+<p><br/></p>
 <hr />
 <p>Tools embody values which change their users. A knife is elegant,
 effective, dangerous, and portable. For a few people throughout history,
@@ -765,7 +1117,7 @@ role="doc-endnotes">
 <ol>
 <li id="fn1"><p>The real history of the resolution of this particular
 question highlights one way in which the reward function is a little bit
-subtle: what is a proof, and what is `standard knowledge’?<a
+subtle: what is a proof, and what is “standard knowledge”?<a
 href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>A significant amount of attention has gone to looking at
 the <em>content</em> and style of the formal, i.e. Lean-language, proofs
@@ -778,32 +1130,51 @@ essentially Luddites. Prof. Doron Zeilberger’s works (link) and opinions
 (link) are well worth perusing to see one human mathematician’s argument
 for this perspective.<a href="#fnref3" class="footnote-back"
 role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>(Footnote: This is a serious benchmark. Stephen Wolfram
+<li id="fn4"><p>There is and has been an active debate about whether the
+way that human mathematicians currently do research proves that they are
+essentially Luddites. Prof. Doron Zeilberger’s works (link) and opinions
+(link) are well worth perusing to see one human mathematician’s argument
+for this perspective.<a href="#fnref4" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>(Footnote: This is a serious benchmark. Stephen Wolfram
 once said in a lecture at NYU that I attended that he rates his impact
 on the practice of mathematics as second only to Newton, who invented
 Calculus. I personally think this is something of an exaggeration, but
 the impact of symbolic algebra tools like Mathematica shouldn’t be
 understated, in part because these tools have are daily tools in the the
 work theoretical physicists, whose work has often been at the heart of
-new mathematical discoveries.)]<a href="#fnref4" class="footnote-back"
+new mathematical discoveries.)]<a href="#fnref5" class="footnote-back"
 role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>This might be a point in which computers can
+<li id="fn6"><p>This might be a point in which computers can
 comparatively easily dominate human mathematicians by going around human
 weaknesses: humans cannot verify large elaborate arguments without
-introducing structures like
-<code>high-level concepts’ which enhance interpretability. Perhaps one might imagine a</code>code-golf’
+introducing structures like “high-level concepts” which enhance
+interpretability. Perhaps one might imagine a “code-golf”
 computer-produced Lean proof of the Poincare conjecture, which never
 touches the Ricci flow, but is some elaborate combinatorial argument.
 Many such arguments were in fact attempted by human mathematicians
 before Perelman’s work, but none succeeded. It is interesting to
 meditate on what value, if any, such an elaborate, difficult to
 interpret, apparently a-conceptual proof of the Poincare conjecture
-might have.<a href="#fnref5" class="footnote-back"
+might have.<a href="#fnref6" class="footnote-back"
 role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>At the moment, this tool is fantastically expensive in
+terms of raw resource costs. Experts in the machine learning community
+feel that the costs will go down dramatically, to the point where this
+indeed can be a freely useable tool in the next 2-4 years; this is
+supported by the rapid exponentials on many cost curves related to the
+technology (link), although one might worry that for something like the
+IMO a rather tailored brute-force LLM-assisted search is being done, and
+it is hard to push the cost curves of brute force search down all that
+rapidly. Personally on this point I am happy to take machine learning
+experts at their word.<a href="#fnref7" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Indeed, at the IAS conference where I tested this
+workflow, someone thought about doing just that.]]<a href="#fnref8"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
-
-
+</article>
 </body>
 </html>

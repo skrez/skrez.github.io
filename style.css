@@ -228,6 +228,12 @@ height:1px;
     }
 }
 
+.inline-img {
+  max-width: 100%;
+  height: auto;
+  display: block; /* Removes extra space below the image */
+}
+
 @media print, screen and (max-width: 600px) {
     body {
 	padding:15px;
