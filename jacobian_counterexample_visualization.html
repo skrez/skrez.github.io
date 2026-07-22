@@ -1,0 +1,1424 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>An interesting construction in High School Geometry</title>
+
+<!-- =====================================================================
+     LaTeX.  Write  $ ... $  for inline and  $$ ... $$  for display math
+     anywhere in the HTML below and it renders on load.  \( \) and \[ \]
+     also work.  Two caveats:
+       · text inside the <svg> plot is NOT processed (KaTeX cannot render
+         into SVG) — those labels stay as Unicode, edited in the script;
+       · if you inject HTML from JavaScript after load, call mathify(node)
+         on it.  Nothing in this file currently needs to.
+     If KaTeX ever fails to load, the page still works and the math shows
+     as raw TeX; a warning appears in the console.  Should the pinned
+     version's hash change, just delete the two integrity="…" attributes.
+     ===================================================================== -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.css"
+      integrity="sha384-1vdNCNel6Tx/NQa8IR1mGOGKsbGreCkOPfbtPPnUURJ5Tu2PRVfQ/7KLZC+Pi1p1"
+      crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.js"
+        integrity="sha384-ycJ6GAwiS15LoUPipwJOrWTvkUHl/YqELValBwI5I4awP1EeEQJYarj+w85ntcz7"
+        crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/contrib/auto-render.min.js"
+        integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz"
+        crossorigin="anonymous"></script>
+
+<style>
+  :root{
+    --bg:#0e131f; --panel:#141b2a; --panel2:#111827; --line:#26314a;
+    --ink:#e7ecf7; --muted:#8b98b8; --dim:#5f6d8c;
+    --gamma:#57a0ff; --rconic:#ff6b7e; --dx:#b98cff; --ex:#33cabf;
+    --ell:#ffb454; --pi:#b3bede; --accent:#33cabf; --flam:#7ee787;
+    --serif:Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:"SFMono-Regular",ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:22px 20px 44px}
+  header{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 16px;
+    border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:18px}
+  h1{font-family:var(--serif);font-weight:500;font-size:23px;letter-spacing:.2px;margin:0}
+  h1 i{font-style:italic}
+  .sub{color:var(--muted);font-size:13.5px;line-height:1.65;max-width:660px}
+  .intro{color:var(--muted);font-size:13.5px;line-height:1.75;margin:0 0 20px;
+    columns:2;column-gap:34px}
+  @media (max-width:860px){.intro{columns:1}}
+  .intro p{margin:0 0 12px;break-inside:avoid}
+  .intro b{color:var(--ink);font-weight:600}
+  .intro a{color:var(--accent);text-decoration:none;
+    border-bottom:1px solid rgba(51,202,191,.35)}
+  .intro a:hover{border-bottom-color:var(--accent)}
+  .intro details{border-top:1px solid var(--line)}
+  .intro details:last-of-type{border-bottom:1px solid var(--line)}
+  .intro summary{cursor:pointer;list-style:none;color:var(--ink);font-weight:600;
+    font-size:13.5px;padding:9px 2px;display:flex;align-items:center;gap:10px;user-select:none}
+  .intro summary::-webkit-details-marker{display:none}
+  .intro summary::before{content:"";flex:none;width:0;height:0;
+    border-left:5px solid var(--dim);border-top:4px solid transparent;
+    border-bottom:4px solid transparent;transition:transform .15s}
+  .intro details[open] summary::before{transform:rotate(90deg)}
+  .intro summary:hover{color:var(--accent)}
+  .intro summary:hover::before{border-left-color:var(--accent)}
+  .intro summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+  .intro summary>span{flex:1}
+  .intro summary .katex{font-size:1em}
+  .intro details>p{margin:0 0 12px;padding-left:15px}
+  .grid{display:grid;grid-template-columns:minmax(0,1fr) 316px;gap:18px}
+  @media (max-width:860px){.grid{grid-template-columns:1fr}}
+  .stage{background:linear-gradient(180deg,#0d1220,#0b101c);border:1px solid var(--line);
+    border-radius:12px;overflow:hidden;position:relative}
+  svg#plot{display:block;width:100%;height:auto;touch-action:none;cursor:crosshair}
+  #plot text{user-select:none}
+  .panel{display:flex;flex-direction:column;gap:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 15px}
+  .card h2{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+    margin:0 0 11px;font-weight:600}
+  .card h2 .katex{font-size:1em}
+  .modes{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;
+    margin-left:auto;flex:none}
+  .modes button{font-family:var(--sans);font-size:12.5px;color:var(--muted);background:transparent;
+    border:0;padding:7px 15px;cursor:pointer;letter-spacing:.02em}
+  .modes button+button{border-left:1px solid var(--line)}
+  .modes button[aria-pressed=true]{background:#1b2740;color:var(--ink)}
+  .modes button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+  .hero{background:linear-gradient(180deg,#122127,#0f1a24);border-color:#1c3a3a}
+  .hero .val{font-family:var(--serif);font-size:34px;line-height:1;color:var(--accent);
+    font-variant-numeric:tabular-nums}
+  .hero .lab{color:var(--ink);font-size:15px}
+  .hero .note{color:var(--muted);font-size:12px;margin-top:8px;line-height:1.6}
+  .status{font-size:12.5px;margin-top:9px;padding:6px 9px;border-radius:7px;line-height:1.5}
+  .status.in{background:#10241c;color:#7fe0b0;border:1px solid #1d4736}
+  .status.out{background:#2a1520;color:#ff9db0;border:1px solid #55283a}
+  .rowlab{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
+  .rowlab .name{font-size:15px}
+  .rowlab .num{font-family:var(--mono);font-size:13px;color:var(--accent);
+    font-variant-numeric:tabular-nums}
+  input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:4px;border-radius:3px;
+    background:var(--line);outline:none;margin:4px 0 2px}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;
+    background:var(--accent);border:2px solid #0b141a;cursor:pointer}
+  input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--accent);
+    border:2px solid #0b141a;cursor:pointer}
+  input[type=range]:disabled{opacity:.4}
+  button.act[aria-pressed=true]{background:#152a2c;border-color:#2b5c5a;color:var(--ink)}
+  input.numin{font-family:var(--mono);font-size:13px;color:var(--accent);background:var(--panel2);
+    border:1px solid var(--line);border-radius:6px;padding:2px 7px;width:78px;text-align:right;
+    font-variant-numeric:tabular-nums;-moz-appearance:textfield}
+  input.numin:hover{border-color:#3a496b}
+  input.numin:focus{outline:none;border-color:var(--accent);color:var(--ink)}
+  input.numin:disabled{opacity:.4;cursor:not-allowed}
+  input.numin.bad{border-color:var(--rconic)}
+  .btnrow{display:flex;gap:8px;margin-top:11px}
+  button.act{flex:1;font-family:var(--sans);font-size:13px;color:var(--ink);background:var(--panel2);
+    border:1px solid var(--line);border-radius:8px;padding:8px 6px;cursor:pointer}
+  button.act:hover{border-color:#3a496b}
+  button.act:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .kv{display:grid;grid-template-columns:auto 1fr;gap:7px 12px;font-size:13px;align-items:baseline}
+  .kv .k{color:var(--muted)}
+  .kv .v{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums;color:var(--ink)}
+  .legend{display:flex;flex-direction:column;gap:9px}
+  .tog{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;user-select:none}
+  .tog input{position:absolute;opacity:0;width:0;height:0}
+  .swatch{width:26px;height:0;border-top-width:3px;border-top-style:solid;border-radius:2px;flex:none}
+  .swatch.dash{border-top-style:dashed}
+  .tog.off{opacity:.4}
+  .tip{color:var(--dim);font-size:11.5px;line-height:1.65}
+  kbd{font-family:var(--mono);font-size:11px;background:var(--panel2);border:1px solid var(--line);
+    border-radius:4px;padding:1px 5px}
+  a.dl{color:var(--accent);text-decoration:none;font-size:12px}
+  .hidden{display:none !important}
+  /* prominent toggle bar for the extra plots */
+  .plotbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 18px}
+  .plotbar .barlab{font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--dim);font-weight:600;margin-right:4px}
+  .ptog{display:inline-flex;align-items:center;gap:10px;font-family:var(--sans);
+    font-size:14px;color:var(--muted);background:var(--panel2);
+    border:1px solid var(--line);border-radius:10px;padding:11px 18px;cursor:pointer;
+    transition:border-color .12s,color .12s,background .12s}
+  .ptog:hover{border-color:#3a496b;color:var(--ink)}
+  .ptog:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .ptog .pip{width:11px;height:11px;border-radius:50%;flex:none;
+    border:2px solid var(--dim);background:transparent;transition:all .12s}
+  .ptog[aria-pressed=true]{color:var(--ink);background:#152a2c;border-color:#2b5c5a}
+  .ptog[aria-pressed=true] .pip{background:var(--accent);border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(51,202,191,.18)}
+  .ptog .katex{font-size:1em}
+  .leftcol{display:flex;flex-direction:column;gap:18px;min-width:0}
+  .chartcap{padding:13px 16px 0;color:var(--muted);font-size:12.5px;line-height:1.7}
+  .chartcap a{color:var(--accent);text-decoration:none;
+    border-bottom:1px solid rgba(51,202,191,.35)}
+  .chartcap a:hover{border-bottom-color:var(--accent)}
+  .captitle{font-family:var(--serif);font-weight:500;font-size:16px;color:var(--ink);
+    margin:0 0 9px;letter-spacing:.2px}
+  .capbtnrow{margin:11px 0 2px}
+  .capbtn{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);
+    font-size:12.5px;color:var(--muted);background:var(--panel2);border:1px solid var(--line);
+    border-radius:8px;padding:7px 13px;cursor:pointer;transition:border-color .12s,color .12s,background .12s}
+  .capbtn:hover{border-color:#3a496b;color:var(--ink)}
+  .capbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .capbtn .pip{width:9px;height:9px;border-radius:50%;flex:none;
+    border:2px solid var(--dim);background:transparent}
+  .capbtn[aria-pressed=true]{color:var(--ink);border-color:#2f5d3d;background:#152415}
+  .capbtn[aria-pressed=true] .pip{background:var(--flam);border-color:var(--flam)}
+  .capbtn .katex{font-size:1em}
+  .mapgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:14px 16px 16px}
+  @media (max-width:700px){.mapgrid{grid-template-columns:1fr}}
+  .mapcol{min-width:0}
+  .maphead{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+    font-weight:600;margin:2px 0 8px}
+  .maphead .katex{font-size:1em;text-transform:none;letter-spacing:0}
+  #cxPlot,#s3Plot{display:block;width:100%;height:auto;background:#0d1220;
+    border:1px solid var(--line);border-radius:8px}
+  #ksplot{cursor:crosshair}
+  .s3ctl{display:flex;align-items:center;gap:9px;font-size:11px;color:var(--dim);margin-top:7px}
+  .s3ctl span{flex:none;width:56px}
+  .s3ctl input{flex:1;margin:0}
+  .chartcap b{color:var(--ink);font-weight:500}
+  #ksplot{display:block;width:100%;height:auto;cursor:default}
+  #ksplot text{user-select:none}
+  /* KaTeX should take the colour of whatever it sits in */
+  .katex{color:inherit;font-size:1.03em}
+  .tip .katex,.kv .katex,.status .katex,.hero .note .katex{font-size:1em}
+  /* prose notes below the plot */
+  .notes{margin-top:26px;border-top:1px solid var(--line);padding-top:22px;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px 34px}
+  .notes h3{font-family:var(--serif);font-weight:500;font-size:16px;margin:0 0 9px;color:var(--ink)}
+  .notes p{color:var(--muted);font-size:13.5px;line-height:1.75;margin:0 0 11px}
+  .notes .katex-display{margin:14px 0;color:var(--ink)}
+  .notes .full{grid-column:1/-1}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <h1>The Jacobian Conjecture Counterexample via High School Mathematics</h1>
+    <div class="modes">
+      <button id="mPoint" aria-pressed="true">Point</button>
+      <button id="mFiber" aria-pressed="false">Fiber</button>
+      <button id="mMap" aria-pressed="false">Map</button>
+    </div>
+    
+  </header>
+
+  <div class="intro" id="introText">
+    <p>This is a visualization, and proof-by-picture, of the counterexample to the Jacobian
+    conjecture recently found by
+    <a href="https://x.com/__alpoge__/status/2079028340955197566?s=20" target="_blank" rel="noopener">Fable</a>.
+    $\Gamma$ is a standard parabola and $R$ is a rescaled and flipped parabola (the rescaling factor is
+    not essential, any rescaling will do). The counterexample to the Jacobian conjecture is the function
+    $(\pi,\kappa,\sigma)\mapsto(e_1,e_2,e_3)$, which can be accessed in &ldquo;Map&rdquo; mode. However,
+    the construction is clearer by starting in &ldquo;Point&rdquo; mode, and we suggest starting there
+    first. Please expand the corresponding section below for explanation.</p>
+
+    <details>
+      <summary><span>Point mode</span></summary>
+      <p>Drag $x$ and $Q$. $\Gamma(x)$ is the point of $\Gamma$ so that its tangent line
+    $D_x$ intersects the horizontal axis at $x$; $h(x)$ is obtained by rescaling and flipping $\Gamma(x)$
+    onto $R$. One computes $\pi(x,Q)$ by looking at the other intersection (called $\rho$) of the line
+    $\ell_{h(x),Q}$ through $Q$ and $h(x)$ with $R$, and projecting to the horizontal axis (labelled
+    $S$). $R$ is precisely the family of intersections of the lines $E_x$ and $D_x$.</p>
+    </details>
+
+    <details>
+      <summary><span>Fiber mode</span></summary>
+      <p>This fixes the value of $\pi$, which determines $\rho$. Then $Q$ determines
+    $x$, unless $Q=\rho$, in which case $x$ moves freely and determines the line $\ell_{h(x),Q}$.</p>
+    </details>
+
+    <details>
+      <summary><span>The region $U$</span></summary>
+      <p>Let $U$ denote the region of points where $Q$ lies on neither $E_x$ nor $D_x$. You can see that
+    $Q$ leaves $U$ when $Q$ crosses $R$, which is the case when $Q$ lies on $E_x$; or when $Q$ crosses
+    the dashed line $L_\rho$, which is the line where $\ell_{h(x),Q}$ and $D_x$ agree, i.e. when $Q$
+    lies on $D_x$.</p>
+    </details>
+
+    <details>
+      <summary><span>The $(\sigma,\kappa)$ chart</span></summary>
+      <p>The set of points $(x,Q)$ in $U$ with a fixed value of $\pi$
+    (or equivalently, $\rho$) turns out to be parameterized by a pair of numbers $(\sigma,\kappa)$.
+    $\sigma$ is essentially the slope of the line $\ell_{h(x),Q}$ relative to that of the line $L_\rho$.
+    $\kappa$ is the value of the
+    <a href="https://en.wikipedia.org/wiki/Cross-ratio" target="_blank" rel="noopener">cross ratio</a>
+    of 4 points on the line $\ell_{h(x),Q}$, two of the points being $Q$ and $h(x)$ and the remaining
+    points a pair of auxiliary points determined by the geometry (read the caption for more details and
+    visualizations).</p>
+    </details>
+
+    <details>
+      <summary><span>Picture-proof</span></summary>
+      <p>From the perspective of elementary projective geometry, the precise
+    construction of $(\sigma,\kappa)$ is unimportant. Recall that $\mathbf A^n$ is affine $n$-space
+    (which you can think of as $\mathbf C^n$ if you are not an algebraic geometer). We write
+    $\mathbf P^1$ for the projective line (the usual line with an additional point at infinity), and
+    $\mathbf P^2$ is the
+    <a href="https://en.wikipedia.org/wiki/Projective_plane" target="_blank" rel="noopener">projective plane</a>
+    (the usual plane with an extra point at infinity for every direction points can go off to infinity
+    to). The basic point is that for fixed $\pi(x,Q)$, the set of valid points $(x,Q)$ in $U$ with the
+    given value of $\pi$ is (since $Q$ determines $x$, except when $Q=\rho$) the
+    <a href="https://en.wikipedia.org/wiki/Blowing_up" target="_blank" rel="noopener">blow-up</a>
+    of the projective plane $\mathbf P^2$ at $\rho$, minus the regions where $Q$ is on $R$ or where $Q$
+    is on $L_\rho$. Removing $L_\rho$ turns this blow-up into $\mathbf P^1\times\mathbf A^1$ (here
+    $\mathbf A^1$ is the algebro-geometric name for $\mathbf C$) and removing $R$ is removing a section
+    of the latter over $\mathbf A^1$ (since every line through $\rho$ intersects $R$ in exactly one
+    other point), making the remaining points a copy of $\mathbf A^1\times\mathbf A^1=\mathbf A^2$.
+    Thus $U$ is a family of $\mathbf A^2$s parameterized by points $\pi$ of $\mathbf A^1$, which has to
+    be a copy of $\mathbf A^1\times\mathbf A^2$. The particular choice of $\kappa$ makes this explicit
+    (read the &ldquo;$(\sigma,\kappa)$ chart&rdquo; caption for more details).</p>
+    </details>
+
+    <details>
+      <summary><span>Map mode</span></summary>
+      <p>Move input coordinates to compute output coordinates, or vice versa. Caution:
+    for some special values of the output coordinates there will be no input coordinates. If an issue
+    arises, click &ldquo;Reset defaults&rdquo;. The input coordinates show $(\pi,\sigma,\kappa)$. These
+    determine $(x,Q)$; these determine the outputs as follows. In &ldquo;The divisor&rdquo;, the plot
+    shows three points in the complex plane. The point $x$ is $x$ as earlier, forced to lie on the real
+    axis in this visualization since $x$ is always a real number. The points $(q_1,q_2)$ are the pair of
+    complex roots of the real polynomial $z^2-Sz+P$, where $(S,P)$ are the coordinates of $Q$. The
+    coefficients of the polynomial $(z-x)(z-q_1)(z-q_2)$ are $e_1,e_2,e_3$ (up to sign). In general, all
+    quantities should be allowed to be complex numbers, but this is unhelpful for visualization.</p>
+    </details>
+  </div>
+
+  <div class="plotbar">
+    <span class="barlab">Extras</span>
+    <button class="ptog" id="tKS" aria-pressed="true">
+      <span class="pip"></span><span>$(\kappa,\sigma)$ chart</span>
+    </button>
+    <button class="ptog" id="tQ" aria-pressed="false">
+      <span class="pip"></span><span>$Q$ coordinate sliders</span>
+    </button>
+    <button class="ptog" id="tDefault"><span>Reset defaults</span></button>
+  </div>
+
+  <div class="grid">
+    <div class="leftcol">
+      <div class="stage">
+        <svg id="plot" viewBox="0 0 680 660" role="img"
+             aria-label="Interactive geometry plot" tabindex="0"></svg>
+      </div>
+
+
+      <div class="stage" id="ksWrap">
+        <div class="chartcap">
+          <h3 class="captitle" id="ksTitleStd">Cross ratio coordinates on $\mathbf{A}^2$ fibers</h3>
+          <h3 class="captitle hidden" id="ksTitleMap">Input coordinates</h3>
+          Both coordinates are
+          <a href="https://en.wikipedia.org/wiki/Cross-ratio" target="_blank" rel="noopener">cross ratios</a>,
+          written in the convention of that article:
+          $$(z_1,z_2;z_3,z_4)=\frac{(z_1-z_3)(z_2-z_4)}{(z_1-z_4)(z_2-z_3)}\,,$$
+          so that as a function of its first argument it is the unique Möbius map with
+          $z_2\mapsto 1$, $z_3\mapsto 0$, $z_4\mapsto\infty$. If one argument is the point at
+          infinity of the line, the two factors containing it are omitted.<br>
+          <b>Horizontal:</b> $\kappa(x,Q)=\bigl(Q,\,u\,;\,z_T,\,h(x)\bigr)$, taken on the line
+          $\ell_{h(x),Q}$, where $z_T=\ell\cap T_{h(x_s)}R$ is sent to $0$, the residual point $u$ of
+          $\ell\cap G$ is sent to $1$ — with $G$ the unit conic of the osculating pencil at
+          $h(x_s)$ — and $h(x)$ is sent to $\infty$. Explicitly
+          $\kappa=\dfrac{D_{x_s}(Q)\cdot T_{h(x_s)}R\,(Q)}{P_Q+2S_Q^2}$.<br>
+          <b>Vertical:</b> $\sigma(x,Q)=\bigl(\ell,\,\ell_1\,;\,\ell_\infty,\,L_\rho\bigr)$, the
+          same cross ratio taken in the pencil of lines through $\rho$ and parametrised by slope:
+          the vertical member $\ell_\infty$ goes to $0$, the member $\ell_1$ of slope $2\pi+1$ goes to
+          $1$, and $L_\rho=D_{x_s}$ goes to $\infty$. Explicitly
+          $\sigma=1/(\mathrm{slope}\,\ell_{h(x),Q}-\mathrm{slope}\,L_\rho)$.<br>
+          <b>The conics $G$</b> are an auxiliary construction, determined as follows: 5 parameters
+          determine a conic, and a pair of conics intersect in 4 points; so there is a 1-parameter
+          (linearly parameterized) family of conics intersecting $R$ to order 3
+          (&ldquo;osculating&rdquo;) at $h(x_s)$ and also intersecting $R$ at $\rho$. We choose an
+          arbitrary fixed value of this parameter once and for all; this determines $G$.
+          <div class="capbtnrow">
+            <button class="capbtn" id="tK1" aria-pressed="true">
+              <span class="pip"></span><span>Mark $\kappa=1$, where $Q$ lies on the unit conic $G$</span>
+            </button>
+            <button class="capbtn" id="tT" aria-pressed="false">
+              <span class="pip"></span><span>Show $T_{h(x_s)}R$ in the main plot</span>
+            </button>
+          </div>
+        </div>
+        <svg id="ksplot" viewBox="0 0 680 300" role="img"
+             aria-label="Cross-ratio against slope"></svg>
+        <div class="s3ctl hidden" id="piRow" style="padding:2px 16px 14px"><span>$\pi$</span><input id="piSlider2" type="range" min="-1.46" max="1.46" step="0.001" value="0.3"></div>
+      </div>
+
+      <div class="stage hidden" id="outWrap">
+        <div class="maphead" style="padding:13px 16px 0;font-size:12px">Output coordinates</div>
+        <div class="mapgrid" style="padding-top:8px">
+          <div class="mapcol">
+            <div class="maphead">The divisor $\{x,\,q_1,\,q_2\}$ in $\mathbf C$ — drag the points</div>
+            <svg id="cxPlot" viewBox="0 0 320 200" aria-label="complex plane"></svg>
+            <div class="chartcap" style="padding:10px 4px 4px">
+              $Q=(S,P)$ is the divisor $q_1+q_2$: the unordered pair with $q_1+q_2=S$ and
+              $q_1q_2=P$, i.e. the roots of the real quadratic $z^2-Sz+P$,
+              $$q_{1,2}=\tfrac{1}{2}\bigl(S\pm\sqrt{S^2-4P}\bigr).$$
+              Both are real when $S^2\ge 4P$; otherwise they form a complex-conjugate pair,
+              symmetric about the real axis. The parameter $x$ is always real.
+              The right plot shows the image of $(x,Q)$ under the covering map
+              $f:X\to\operatorname{Sym}^3(\mathbf P^1)=\mathbf P^3$: the triple $\{x,q_1,q_2\}$
+              is the cubic $(z-x)(z-q_1)(z-q_2)=z^3-e_1z^2+e_2z-e_3$, plotted as
+              $(e_1,e_2,e_3)=(x+S,\ xS+P,\ xP)$ in the affine chart $e_0=1$ of $\mathbf P^3$.
+            </div>
+          </div>
+          <div class="mapcol">
+            <div class="maphead">$f(x,Q)\in\operatorname{Sym}^3(\mathbf P^1)=\mathbf P^3$</div>
+            <div class="capbtnrow" style="margin:0 0 8px">
+              <button class="capbtn" id="tS3" aria-pressed="true">
+                <span class="pip"></span><span>Show the $\mathbf P^3$ point</span>
+              </button>
+            </div>
+            <svg id="s3Plot" viewBox="0 0 320 220" aria-label="Sym3 point"></svg>
+            <div class="s3ctl"><span>zoom out</span><input id="s3Zoom" type="range" min="1" max="12" step="0.1" value="1"></div>
+            <div class="s3ctl"><span>rotate</span><input id="s3Rot" type="range" min="0" max="360" step="1" value="0"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="card hero">
+        <h2>Projection to $\mathbf A^1$</h2>
+        <div><span class="lab">$\pi(x,Q)\;=\;$</span><span class="val" id="piVal">—</span></div>
+        <div class="note" id="heroNotePoint">Project the residual point $\rho$ vertically, that is from
+          $p_\infty$, onto the $S$-axis; the landing point is the dot marked $\pi(x,Q)$. This single
+          coordinate is the whole target of $\pi:U\to\mathbf A^1$.</div>
+        <div class="note hidden" id="heroNoteMap">The value of $\pi$ is the first slider;
+          $\kappa$ and $\sigma$ pick the point of the fiber $\pi^{-1}(\pi)\cong\mathbf A^2$.
+          Since $(\pi,\kappa,\sigma)$ is an isomorphism $U\to\mathbf A^3$, every slider position is a
+          genuine point of $U$ — the removed loci sit at $\kappa=\infty$ and $\sigma=\infty$.</div>
+        <div class="note hidden" id="heroNoteFiber">$\pi$ is held fixed by the slider, so $\rho$ is
+          pinned on $R$. Everything else follows from $Q$. The reachable pairs $(x,Q)$ are exactly the
+          fiber $\pi^{-1}(\rho)\cong\mathbf A^2$.</div>
+        <div class="status in" id="status">
+          <span id="stIn">$(x,Q)\in U$ — a genuine point of $\mathbf A^3$</span>
+          <span id="stEx" class="hidden">$Q\in E_x$ — removed, since $Q=h(x)$</span>
+          <span id="stDx" class="hidden">$Q\in D_x$ — removed, the whole line lies in $D$</span>
+          <span id="stInf" class="hidden">$\ell$ is vertical, so $h(x)=p_\infty$ and $x=\infty$ — off the affine chart</span>
+        </div>
+      </div>
+
+      <div class="card" id="paramCard">
+        <h2><span id="headPoint">Parameter</span><span id="headFiber" class="hidden">Fixed value of $\pi$</span></h2>
+        <div class="rowlab">
+          <span class="name"><span id="nmPoint">$x$</span><span id="nmFiber" class="hidden">$\pi$</span></span>
+          <input class="numin" id="sliderNum" type="text" inputmode="decimal" spellcheck="false"
+            value="0.900" aria-label="parameter value, press Enter to apply">
+        </div>
+        <input id="slider" type="range" min="-1.46" max="1.46" step="0.001" value="0.9">
+        <div class="btnrow">
+          <button class="act" id="sweep">Sweep</button>
+          <button class="act" id="reset">Reset</button>
+        </div>
+        <div class="tip" style="margin-top:9px">Every value box is editable: type a number and press
+          <kbd>Enter</kbd> to apply it, <kbd>Esc</kbd> to discard.</div>
+      </div>
+
+
+      <div class="card hidden" id="mapCard">
+        <h2>Image point $(\pi,\kappa,\sigma)\in\mathbf A^3$</h2>
+        <div class="rowlab"><span class="name">$\pi$</span><span class="num" id="mwNum">0.300</span></div>
+        <input id="mwSlider" type="range" min="-1.46" max="1.46" step="0.001" value="0.3">
+        <div class="rowlab" style="margin-top:10px"><span class="name">$\kappa$</span><span class="num" id="mkNum">0.800</span></div>
+        <input id="mkSlider" type="range" min="-6" max="6" step="0.001" value="0.8">
+        <div class="rowlab" style="margin-top:10px"><span class="name">$\sigma$</span><span class="num" id="msNum">-0.800</span></div>
+        <input id="msSlider" type="range" min="-3" max="3" step="0.001" value="-0.8">
+        <div class="tip" style="margin-top:9px">$(x,Q)=\Psi(\pi,\kappa,\sigma)$ is reconstructed by the
+          inverse isomorphism; $\sigma=0$ gives $x=\infty$.</div>
+      </div>
+
+      <div class="card hidden" id="qcard">
+        <h2>Coordinates of $Q$</h2>
+        <div class="rowlab"><span class="name">$S_Q$</span><input class="numin" id="qsNum" type="text" inputmode="decimal" spellcheck="false"
+            value="0.300" aria-label="S coordinate of Q, press Enter to apply"></div>
+        <input id="qsSlider" type="range" step="0.001" value="0.30">
+        <div class="rowlab" style="margin-top:10px"><span class="name">$P_Q$</span><input class="numin" id="qpNum" type="text" inputmode="decimal" spellcheck="false"
+            value="-1.000" aria-label="P coordinate of Q, press Enter to apply"></div>
+        <input id="qpSlider" type="range" step="0.001" value="-1.00">
+        <div class="btnrow">
+          <button class="act" id="qLock" aria-pressed="false">Lock $Q$ to $R$</button>
+        </div>
+        <div class="tip" style="margin-top:9px">With the lock on, $P_Q$ follows $-2S_Q^2$, so sliding
+          $S_Q$ walks $Q$ along the conic $R$.</div>
+      </div>
+
+      <div class="card">
+        <h2>Live values</h2>
+        <div class="kv" id="kv">
+          <div class="k">$x$</div>            <div class="v" id="vX">—</div>
+          <div class="k">$\tau(x)$</div>      <div class="v" id="vTau">—</div>
+          <div class="k">$\alpha(x)$</div>    <div class="v" id="vAlpha">—</div>
+          <div class="k">$\Gamma(x)$</div>     <div class="v" id="vG">—</div>
+          <div class="k">$h(x)$</div>         <div class="v" id="vH">—</div>
+          <div class="k">$Q$</div>            <div class="v" id="vQ">—</div>
+          <div class="k">$\rho(x,Q)$</div>    <div class="v" id="vRho">—</div>
+          <div class="k">$\kappa(x,Q)$</div>  <div class="v" id="vK">—</div>
+          <div class="k">$\sigma(x,Q)$</div>  <div class="v" id="vSig">—</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Show / hide</h2>
+        <div class="legend" id="legend"></div>
+      </div>
+
+      <div class="card">
+        <h2>Controls</h2>
+        <div class="tip" id="tipPoint">Drag <b style="color:var(--gamma)">$x$</b> along the $S$-axis and
+          <b style="color:var(--ell)">$Q$</b> anywhere. With the plot focused, <kbd>←→</kbd> moves $x$
+          and <kbd>Shift</kbd>+arrows nudges $Q$.</div>
+        <div class="tip hidden" id="tipFiber">Drag <b style="color:var(--ell)">$Q$</b> anywhere and $x$
+          follows. The slider, or dragging <b style="color:var(--rconic)">$\rho$</b> along $R$, sets the
+          value of $\pi$. <kbd>←→</kbd> moves $\rho$ and <kbd>Shift</kbd>+arrows nudges $Q$.</div>
+        <div class="tip hidden" id="tipMap">Drag the point in the $(\kappa,\sigma)$ chart and
+          the $\pi$ slider under it, or use the side sliders. Dragging <b style="color:var(--ell)">$Q$</b> or
+          <b style="color:var(--rconic)">$\rho$</b> in the main plot updates the coordinates through
+          the forward map.</div>
+        <div class="tip" style="margin-top:10px"><a class="dl" id="dlSvg" href="#">Download current view as SVG ↓</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =================================================================
+       CLARIFYING TEXT.  Ordinary HTML with $ … $ / $$ … $$ inside.
+       Add, remove or reorder <div class="note-col"> blocks freely; the
+       grid reflows.  Use class="full" for a block spanning all columns.
+       ================================================================= -->
+  <section class="notes" id="notes">
+
+    <div>
+      <h3>The chart</h3>
+      <p>Write a degree-two divisor $y+z$ on the affine line $\mathbf A=\mathbf P^1\setminus\{\infty\}$
+      in its symmetric coordinates $S=y+z$, $P=yz$. This identifies
+      $\operatorname{Sym}^2(\mathbf A)$ with $\mathbf A^2_{S,P}$, and it is the plane you are looking at.
+      The Veronese conic $\Gamma=\{2x\}$ becomes the parabola
+      $$\Gamma:\ P=\tfrac{S^2}{4},\qquad \Gamma(x)=g(x)=(2x,\,x^2).$$
+      The $S$-axis is the locus $P=0$, so the point $(x,0)$ is the divisor $0+x$; that is where the
+      draggable $x$ sits. It is also the foot of the tangent, since setting $P=0$ in $D_x:\ P=xS-x^2$
+      returns $S=x$. So $D_x$ runs from $x$ on the axis through $\Gamma(x)$, and the doubling
+      $x\mapsto 2x$ is visible along it.
+      The point $p_\infty=g(\infty)$ is not in this chart: it is the point at infinity in the vertical
+      direction, which is why every line of the pencil $E_x$ appears vertical.</p>
+    </div>
+
+    <div>
+      <h3>The two families</h3>
+      <p>The ramification divisor $D$ meets the fiber over $x$ in the tangent line to $\Gamma$, and the
+      hyperplane pullback $E$ meets it in the zero-sum locus:
+      $$D_x:\ P=xS-x^2,\qquad E_x:\ S=-x.$$
+      So the $D_x$ sweep out all tangents to $\Gamma$ while the $E_x$ are the complete pencil of lines
+      through $p_\infty$. They meet at
+      $$h(x)=x+\alpha(x)=(-x,\,-2x^2),\qquad \alpha(x)=-2x,$$
+      and as $x$ varies this traces the auxiliary conic $R:\ P=-2S^2$. The arrow $\mu$ in the plot is the
+      map $g(x)\mapsto h(x)$, namely $(S,P)\mapsto(-S/2,\,-2P)$.</p>
+    </div>
+
+    <div>
+      <h3>The residual map</h3>
+      <p>Given $(x,Q)\in U$ we have $Q\neq h(x)$, so the line $\ell_{h(x),Q}=\overline{h(x)Q}$ is defined. It
+      meets $R$ at $h(x)$ and at one residual point $\rho(x,Q)$; projecting that from $p_\infty$ — which
+      in this chart is simply reading off its $S$-coordinate — gives
+      $$\pi(x,Q)=S_{\rho}\in\mathbf A^1.$$
+      That projection is the dashed segment in the plot, dropping from $\rho$ straight down to the
+      $S$-axis.
+      Concretely, if $\ell_{h(x),Q}$ has slope $m$ then the two intersections with $R$ have $S$-coordinates
+      summing to $-m/2$, so $S_\rho=-\tfrac m2+x$.</p>
+    </div>
+
+    <div>
+      <h3>The two modes</h3>
+      <p><b>Point.</b> You choose $x$ and $Q$; the applet computes $\rho$ and $\pi$. This is the
+      construction as written.</p>
+      <p><b>Fiber.</b> You fix the value of $\pi$ and move $Q$; the applet inverts the construction to
+      recover $x$. The configurations you can reach this way are precisely the fiber
+      $\pi^{-1}(\rho)$, which the paper identifies with $\mathbf A^2$: it is
+      $\operatorname{Bl}_\rho\mathbf P^2$ with the proper transform of $R$ and one ruling deleted.
+      Switching modes leaves the picture unchanged, since each mode hands the other the quantity it
+      derives.</p>
+    </div>
+
+  </section>
+</div>
+
+<script>
+"use strict";
+const NS="http://www.w3.org/2000/svg";
+const svg=document.getElementById("plot");
+const $=id=>document.getElementById(id);
+
+// ---- LaTeX -------------------------------------------------------------
+const MATHOPTS={
+  delimiters:[{left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false},
+              {left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],
+  ignoredTags:["script","noscript","style","textarea","pre","code","svg"],
+  throwOnError:false};
+function mathify(node){
+  if(!node||typeof window.renderMathInElement!=="function")return;
+  try{ window.renderMathInElement(node,MATHOPTS); }catch(err){ console.warn("KaTeX:",err); }
+}
+window.addEventListener("DOMContentLoaded",()=>{
+  if(typeof window.renderMathInElement!=="function"){
+    console.warn("KaTeX did not load; math is shown as raw TeX.");return;}
+  mathify(document.body);
+});
+
+// ---- world <-> screen -------------------------------------------------
+const K=75, OX=348, OY=302.5;
+const Sx=S=>OX+S*K, Sy=P=>OY-P*K, iS=px=>(px-OX)/K, iP=py=>(OY-py)/K;
+const TOP=34, BOT=628, LFT=40, RGT=656;
+const Sl=iS(LFT), Sr=iS(RGT), Pt=iP(TOP), Pb=iP(BOT);
+const XMIN=-1.46, XMAX=1.46;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+// ---- geometry ---------------------------------------------------------
+const hpt=x=>[-x,-2*x*x];             // h(x) on R:  P=-2S^2
+const gpt=x=>[2*x,x*x];               // g(x) on Γ:  P=S^2/4
+const tau=x=>-x/2, alpha=x=>-2*x;
+function residualS(x,Qs,Qp){          // residual S-coord of line h(x)Q ∩ R
+  const S0=-x,P0=-2*x*x, dS=Qs-S0;
+  if(Math.abs(dS)<1e-7) return null;  // vertical line -> ρ = p_∞
+  const m=(Qp-P0)/dS;
+  return -m/2 - S0;
+}
+// inverse: given ρ = (r,-2r²) on R and a free Q, recover x.
+function xFromRhoQ(r,Qs,Qp){
+  const dS=Qs-r;
+  if(Math.abs(dS)<1e-7) return null;  // line ρQ vertical -> h(x)=p_∞, x=∞
+  const m=(Qp+2*r*r)/dS;
+  return m/2 + r;
+}
+const onEx=(x,Q)=>Math.abs(Q[0]-(-x))<0.06;
+const onDx=(x,Q)=>Math.abs(Q[1]-(x*Q[0]-x*x))<0.06;
+
+// ---- state ------------------------------------------------------------
+const state={mode:"point", x:0.9, rho:0.40, Q:[0.30,-1.00], showKS:true, showK1:true, showQ:false, lockR:false, mk:0.8, ms:-0.8, mw:0.3, showS3:true, s3Z:1, s3R:0,
+  show:{Dx:true,Ex:true,ell:true,rho:true,pi:true,chord:false,gamma:true,R:true,Flam:false,Lrho:true,Tline:false}};
+
+// ---- drawing helpers --------------------------------------------------
+function el(tag,attrs){const e=document.createElementNS(NS,tag);
+  for(const k in attrs) e.setAttribute(k,attrs[k]); return e;}
+function line(x1,y1,x2,y2,stroke,w,dash){
+  const a={x1,y1,x2,y2,stroke,"stroke-width":w,"stroke-linecap":"round"};
+  if(dash)a["stroke-dasharray"]=dash; return el("line",a);}
+function txt(x,y,s,fill,size,anchor,italic){
+  const t=el("text",{x,y,fill,"font-size":size,"text-anchor":anchor||"start",
+    "font-family":"Georgia,serif","font-style":italic===false?"normal":"italic"});
+  t.textContent=s; return t;}
+// KaTeX cannot render into SVG, so in-plot subscripts are built by hand:
+// a smaller tspan dropped below the baseline.
+function txtSub(x,y,main,sub,fill,size,anchor){
+  const t=txt(x,y,main,fill,size,anchor);
+  const ts=el("tspan",{"font-size":(size*0.72).toFixed(1),dy:(size*0.27).toFixed(1)});
+  ts.textContent=sub; t.appendChild(ts); return t;}
+// arrow between two screen points, inset at each end so the dots stay legible.
+// On short arrows the insets and head scale down rather than the arrow vanishing.
+function arrowTo(ax,ay,bx,by,color,w,gapA,gapB,head){
+  const L=Math.hypot(bx-ax,by-ay);
+  if(L<1e-6) return null;                       // endpoints coincide: nothing to draw
+  const k=Math.min(1,L/(gapA+gapB+8));
+  const ga=gapA*k, gb=gapB*k, hd=head*Math.max(0.4,k);
+  const ux=(bx-ax)/L, uy=(by-ay)/L;
+  const x1=ax+ux*ga, y1=ay+uy*ga, x2=bx-ux*gb, y2=by-uy*gb;
+  const g=el("g",{});
+  g.appendChild(line(x1,y1,x2,y2,color,w));
+  const aa=Math.atan2(by-ay,bx-ax);
+  g.appendChild(el("path",{d:`M${x2} ${y2} `+
+    `L${x2-hd*Math.cos(aa-0.4)} ${y2-hd*Math.sin(aa-0.4)} `+
+    `L${x2-hd*Math.cos(aa+0.4)} ${y2-hd*Math.sin(aa+0.4)} Z`,fill:color}));
+  return g;}
+function dot(P,fill,r){return el("circle",{cx:Sx(P[0]),cy:Sy(P[1]),r:r||4.2,fill,
+  stroke:"#0b101c","stroke-width":1.6});}
+function clipLine(A,B){
+  const pts=[];
+  for(const S of [Sl,Sr]){const P=A*S+B; if(P>=Pb-1e-6&&P<=Pt+1e-6)pts.push([S,P]);}
+  if(Math.abs(A)>1e-9)for(const P of [Pb,Pt]){const S=(P-B)/A; if(S>=Sl-1e-6&&S<=Sr+1e-6)pts.push([S,P]);}
+  const uniq=[];for(const p of pts){if(uniq.every(q=>Math.hypot(p[0]-q[0],p[1]-q[1])>1e-4))uniq.push(p);}
+  return uniq.slice(0,2).map(p=>[Sx(p[0]),Sy(p[1])]);
+}
+function parabPath(coef,smin,smax){
+  let d="",n=180;
+  for(let i=0;i<=n;i++){const S=smin+(smax-smin)*i/n,P=coef*S*S;
+    if(P<Pb-.02||P>Pt+.02)continue; d+=(d?"L":"M")+Sx(S).toFixed(2)+" "+Sy(P).toFixed(2)+" ";}
+  return d;
+}
+function parab2Path(A,B,C,smin,smax){          // P = A S^2 + B S + C
+  let d="",n=200;
+  for(let i=0;i<=n;i++){const S=smin+(smax-smin)*i/n,P=A*S*S+B*S+C;
+    if(P<Pb-.02||P>Pt+.02){if(d&&!d.endsWith("|"))d+="|";continue;}
+    d+=(d&&!d.endsWith("|")?"L":"M")+Sx(S).toFixed(2)+" "+Sy(P).toFixed(2)+" ";}
+  return d.replace(/\|/g,"");
+}
+const CO=getComputedStyle(document.documentElement);
+const col=n=>CO.getPropertyValue(n).trim();
+
+// ---- κ–σ chart ---------------------------------------------------------
+// κ(x,Q) = [Q | ∞, ρ, h(x)] : parametrise ℓ_{x,Q} by its S-coordinate t and send
+// ∞_ℓ→0, ρ→1, h(x)→∞.  With one normalisation point at infinity the cross-ratio
+// reduces to (t_ρ − t_h)/(t_Q − t_h), and being a cross-ratio the answer does not
+// depend on which affine parameter of ℓ was used.
+// σ(x,Q) = slope of that same line, which is ℓ_{x,Q} itself since ρ ∈ ℓ_{x,Q}.
+const ksSvg=$("ksplot");
+const KSW=680, KSH=300, KOX=340, KOY=158, KSK=64, KSS=19;
+const kX=k=>KOX+k*KSK, kY=s=>KOY-s*KSS;
+const KMAX=(KSW/2-26)/KSK, SMAXV=Math.min((KSH-KOY)-14,KOY-52)/KSS;
+function drawKS(kap,sig){
+  const g=el("g",{});
+  // grid
+  const gr=el("g",{});
+  for(let k=-Math.floor(KMAX);k<=KMAX;k++) if(k!==0)
+    gr.appendChild(line(kX(k),kY(SMAXV),kX(k),kY(-SMAXV),col('--line'),1));
+  for(let s=-Math.floor(SMAXV);s<=SMAXV;s++) if(s!==0)
+    gr.appendChild(line(kX(-KMAX),kY(s),kX(KMAX),kY(s),col('--line'),1));
+  gr.setAttribute("opacity",".5"); g.appendChild(gr);
+  // axes
+  g.appendChild(line(kX(-KMAX),kY(0),kX(KMAX),kY(0),col('--muted'),1.3));
+  g.appendChild(line(kX(0),kY(SMAXV),kX(0),kY(-SMAXV),col('--muted'),1.3));
+  for(let k=-Math.floor(KMAX);k<=KMAX;k++) if(k!==0)
+    g.appendChild(txt(kX(k),kY(0)+15,String(k),col('--dim'),10.5,"middle",false));
+  for(let s=-Math.floor(SMAXV);s<=SMAXV;s+=2) if(s!==0)
+    g.appendChild(txt(kX(0)-7,kY(s)+3.5,String(s),col('--dim'),10.5,"end",false));
+  // κ_F = 1 is the locus Q ∈ F_1, i.e. Q is the unit-section point of its ruling
+  if(state.showK1)
+    g.appendChild(line(kX(1),kY(SMAXV),kX(1),kY(-SMAXV),col('--flam'),1.2,"4 4"));
+  // axis names
+  g.appendChild(txt(kX(KMAX)-2,kY(0)-9,"κ(x,Q)",col('--muted'),14,"end"));
+  g.appendChild(txt(kX(0)+9,kY(SMAXV)+12,"σ(x,Q)",col('--muted'),13));
+  // the point
+  const ok = kap!=null&&sig!=null&&isFinite(kap)&&isFinite(sig);
+  if(!ok){
+    g.appendChild(txt(KOX,KOY-6,"κ and σ are undefined here",col('--dim'),13,"middle"));
+    g.appendChild(txt(KOX,KOY+13,"(Q = ρ, or Q on R or on Lρ)",col('--dim'),11,"middle"));
+  }else if(Math.abs(kap)<=KMAX&&Math.abs(sig)<=SMAXV){
+    g.appendChild(line(kX(kap),kY(0),kX(kap),kY(sig),col('--accent'),1,"2 3"));
+    g.appendChild(line(kX(0),kY(sig),kX(kap),kY(sig),col('--accent'),1,"2 3"));
+    g.appendChild(el("circle",{cx:kX(kap),cy:kY(sig),r:6,fill:col('--accent'),
+      stroke:"#0b101c","stroke-width":2}));
+    g.appendChild(txt(kX(kap)+11,kY(sig)-9,
+      "("+kap.toFixed(2)+", "+sig.toFixed(2)+")",col('--ink'),12,undefined,false));
+  }else{ // off chart: park a hollow marker on the border, keep the numbers
+    const ck=clamp(kap,-KMAX,KMAX), cs=clamp(sig,-SMAXV,SMAXV);
+    g.appendChild(el("circle",{cx:kX(ck),cy:kY(cs),r:6,fill:"none",
+      stroke:col('--accent'),"stroke-width":2,"stroke-dasharray":"3 3"}));
+    g.appendChild(txt(kX(ck)+(ck>0?-11:11),kY(cs)-11,
+      "off chart: ("+kap.toFixed(2)+", "+sig.toFixed(2)+")",col('--dim'),11,
+      ck>0?"end":"start",false));
+  }
+  ksSvg.replaceChildren(g);
+}
+
+// ---- main render ------------------------------------------------------
+let lastStatus=null;
+function setStatus(which){
+  if(which===lastStatus)return; lastStatus=which;
+  for(const k of ["stIn","stEx","stDx","stInf"]) $(k).classList.toggle("hidden",k!==which);
+  $("status").className = "status "+(which==="stIn"?"in":"out");
+}
+function render(){
+  const sh=state.show;
+  let Q, x, Sr_;
+  if(state.mode==="point"){ Q=state.Q; x=state.x; Sr_=residualS(x,Q[0],Q[1]); }
+  else if(state.mode==="fiber"){ Q=state.Q; Sr_=state.rho; x=xFromRhoQ(state.rho,Q[0],Q[1]); }
+  else { const d=mapDerive(); x=d.x; Q=d.Q; Sr_=state.mw; }
+  const finite = x!=null && isFinite(x);
+  const g = finite?gpt(x):null, h = finite?hpt(x):null, ht = finite?hpt(tau(x)):null;
+  const rho = Sr_==null?null:[Sr_,-2*Sr_*Sr_];
+  const inU = finite && !onEx(x,Q) && !onDx(x,Q);
+
+  const scene=el("g",{});
+  // grid
+  const grid=el("g",{stroke:col('--line'),"stroke-width":1,opacity:.5});
+  for(let S=Math.ceil(Sl);S<=Sr;S++)grid.appendChild(line(Sx(S),Sy(Pt),Sx(S),Sy(Pb),col('--line'),1));
+  for(let P=Math.ceil(Pb);P<=Pt;P++)grid.appendChild(line(Sx(Sl),Sy(P),Sx(Sr),Sy(P),col('--line'),1));
+  scene.appendChild(grid);
+  // axes
+  scene.appendChild(line(Sx(Sl),Sy(0),Sx(Sr),Sy(0),col('--muted'),1.3));
+  scene.appendChild(line(Sx(0),Sy(Pb),Sx(0),Sy(Pt),col('--muted'),1.3));
+  scene.appendChild(txt(Sx(Sr)-4,Sy(0)-7,"S",col('--muted'),14,"end"));
+  scene.appendChild(txt(Sx(0)+8,Sy(Pt)+14,"P",col('--muted'),14));
+
+  // E_x : vertical line through h(x); shares p_∞
+  if(sh.Ex&&finite){
+    scene.appendChild(line(Sx(-x),Sy(Pb),Sx(-x),Sy(Pt),col('--ex'),2.2));
+    scene.appendChild(el("path",{d:`M${Sx(-x)-4} ${Sy(Pt)+9} L${Sx(-x)} ${Sy(Pt)+1} L${Sx(-x)+4} ${Sy(Pt)+9} Z`,fill:col('--ex')}));
+    scene.appendChild(txt(Sx(-x)-7,Sy(2.6),"E",col('--ex'),16,"end"));
+    scene.appendChild(txt(Sx(-x)-7+1,Sy(2.6)+5,"x",col('--ex'),11));
+    scene.appendChild(txtSub(Sx(-x)+7,Sy(Pt)+13,"p","∞",col('--ex'),12));
+  }
+  // D_x : tangent to Γ at g(x);  P = xS - x^2
+  if(sh.Dx&&finite){
+    const [a,b]=clipLine(x,-x*x);
+    if(a&&b){scene.appendChild(line(a[0],a[1],b[0],b[1],col('--dx'),2.2));
+      const e=a[0]>b[0]?a:b; scene.appendChild(txtSub(e[0]-6,e[1]-6,"D","x",col('--dx'),15,"end"));}
+  }
+  // D_x as chord of R (optional)
+  if(sh.chord&&finite){
+    scene.appendChild(line(Sx(h[0]),Sy(h[1]),Sx(ht[0]),Sy(ht[1]),col('--dx'),4.5,"1 6"));
+    scene.appendChild(dot(ht,col('--dx'),3.6));
+    scene.appendChild(txt(Sx(ht[0])+7,Sy(ht[1])-6,"h(τx)",col('--dx'),12));
+  }
+  // ℓ_{x,Q}
+  if(sh.ell){
+    if(finite&&Math.abs(Q[0]-h[0])>1e-6){
+      const A=(Q[1]-h[1])/(Q[0]-h[0]); const [a,b]=clipLine(A,h[1]-A*h[0]);
+      if(a&&b){scene.appendChild(line(a[0],a[1],b[0],b[1],col('--ell'),2.2));
+        const e=a[0]>b[0]?a:b;scene.appendChild(txtSub(e[0]-4,e[1]-6,"ℓ","h(x),Q",col('--ell'),14,"end"));}
+    }else{
+      scene.appendChild(line(Sx(Q[0]),Sy(Pb),Sx(Q[0]),Sy(Pt),col('--ell'),2.2));
+    }
+  }
+  // conics on top
+  if(sh.gamma){scene.appendChild(el("path",{d:parabPath(0.25,-3.7,3.7),fill:"none",stroke:col('--gamma'),"stroke-width":2.6}));
+    scene.appendChild(txt(Sx(2.75),Sy(2.35),"Γ",col('--gamma'),18));}
+  if(sh.R){scene.appendChild(el("path",{d:parabPath(-2,-1.48,1.48),fill:"none",stroke:col('--rconic'),"stroke-width":2.6}));
+    scene.appendChild(txt(Sx(1.16),Sy(-2.05),"R",col('--rconic'),18));}
+  // L_rho = D_{x_s} : the chord through rho and (x_s,0) = (2W,0); the removed ruling.
+  if(sh.Lrho&&rho){
+    const Wr=rho[0];
+    const [a2,b2]=clipLine(2*Wr,-4*Wr*Wr);
+    if(a2&&b2){
+      scene.appendChild(line(a2[0],a2[1],b2[0],b2[1],col('--dim'),1.6,"6 5"));
+      // label offset perpendicular to the line so it never sits on it
+      const e=a2[0]>b2[0]?a2:b2, o2=a2[0]>b2[0]?b2:a2;
+      const L0=Math.hypot(e[0]-o2[0],e[1]-o2[1])||1;
+      const ux2=(e[0]-o2[0])/L0, uy2=(e[1]-o2[1])/L0;
+      let nx2=-uy2, ny2=ux2; if(ny2<0){nx2=-nx2;ny2=-ny2;}
+      scene.appendChild(txtSub(e[0]-ux2*30+nx2*15,e[1]-uy2*30+ny2*15,"L","ρ",col('--dim'),13,"middle"));
+    }
+    if(Math.abs(2*Wr)<Sr){
+      scene.appendChild(dot([2*Wr,0],col('--dim'),3.4));
+      scene.appendChild(txtSub(Sx(2*Wr)+7,Sy(0)+18,"x","s",col('--dim'),12));
+    }
+  }
+  // T_{h(x_s)}R : tangent to R at h(2W) — the zero-section of κ (κ = 0 exactly on it)
+  if(sh.Tline&&rho){
+    const Wr=rho[0];
+    const [a3,b3]=clipLine(8*Wr,8*Wr*Wr);
+    if(a3&&b3){
+      scene.appendChild(line(a3[0],a3[1],b3[0],b3[1],col('--pi'),1.6,"2 5"));
+      const e3=a3[0]>b3[0]?a3:b3, o3=a3[0]>b3[0]?b3:a3;
+      const L3=Math.hypot(e3[0]-o3[0],e3[1]-o3[1])||1;
+      const ux3=(e3[0]-o3[0])/L3, uy3=(e3[1]-o3[1])/L3;
+      let nx3=-uy3, ny3=ux3; if(ny3<0){nx3=-nx3;ny3=-ny3;}
+      const tl=txtSub(e3[0]-ux3*34+nx3*15,e3[1]-uy3*34+ny3*15,"T","h(xₛ)",col('--pi'),13,"middle");
+      const tr=el("tspan",{"font-size":"13","dy":"-3.5"});tr.textContent="R";tl.appendChild(tr);
+      scene.appendChild(tl);
+    }
+  }
+  // G : the unit conic of the osculating pencil at h(x_s) — the member
+  // { T_{h(x_s)}R · D_{x_s} = P + 2S^2 } where the coordinate κ equals 1.
+  // Triple contact with R at h(2W), transverse crossing at rho.
+  // As a quadratic in P:  P^2 + b(S) P + c(S) = 0.
+  if(sh.Flam&&rho){
+    const Wr=rho[0];
+    const bC=S=>-10*Wr*S-4*Wr*Wr-1;
+    const cC=S=>16*Wr*Wr*S*S-16*Wr*Wr*Wr*S-32*Wr*Wr*Wr*Wr-2*S*S;
+    for(const sgn of [1,-1]){
+      let d="",pen=false;
+      const n=260;
+      for(let i=0;i<=n;i++){
+        const S=Sl+(Sr-Sl)*i/n, b=bC(S), c=cC(S), disc=b*b-4*c;
+        if(disc<0){pen=false;continue;}
+        const P=(-b+sgn*Math.sqrt(disc))/2;
+        if(P<Pb-.02||P>Pt+.02){pen=false;continue;}
+        d+=(pen?"L":"M")+Sx(S).toFixed(2)+" "+Sy(P).toFixed(2)+" ";pen=true;
+      }
+      if(d)scene.appendChild(el("path",{d,fill:"none",stroke:col('--flam'),
+        "stroke-width":1.6,opacity:.85}));
+    }
+    {const lS=Wr+0.5,b=bC(lS),c=cC(lS),disc=b*b-4*c;
+     if(disc>0){const lP=(-b+Math.sqrt(disc))/2;
+       if(lP>Pb+.1&&lP<Pt-.1)scene.appendChild(txt(Sx(lS)+6,Sy(lP)-6,"G",col('--flam'),14));}}
+    // the unit point on the current ruling: residual intersection of G with ell_x
+    if(finite){
+      const m=2*(x-Wr);
+      const A=(m-2*Wr)*(m-8*Wr)-2, B=-(m-2*Wr)*(m*Wr+10*Wr*Wr)-2*x;
+      if(Math.abs(A)>1e-9){
+        const uS=-B/A, uP=m*(uS-Wr)-2*Wr*Wr;
+        if(uS>Sl&&uS<Sr&&uP>Pb&&uP<Pt){
+          scene.appendChild(el("circle",{cx:Sx(uS),cy:Sy(uP),r:4,fill:col('--flam'),
+            stroke:"#0b101c","stroke-width":1.6}));
+        }
+      }
+    }
+  }
+
+  // μ : arrow g(x) -> h(x)
+  if(finite){const ax=Sx(g[0]),ay=Sy(g[1]),bx=Sx(h[0]),by=Sy(h[1]);
+   const L=Math.hypot(bx-ax,by-ay);
+   if(L>24){
+     const ux=(bx-ax)/L,uy=(by-ay)/L;
+     const x1=ax+ux*9,y1=ay+uy*9,x2=bx-ux*11,y2=by-uy*11;
+     scene.appendChild(line(x1,y1,x2,y2,col('--ink'),1.5));
+     const aa=Math.atan2(y2-y1,x2-x1);
+     scene.appendChild(el("path",{d:`M${x2} ${y2} L${x2-9*Math.cos(aa-0.4)} ${y2-9*Math.sin(aa-0.4)} L${x2-9*Math.cos(aa+0.4)} ${y2-9*Math.sin(aa+0.4)} Z`,fill:col('--ink')}));
+   }}
+
+  // ρ : the residual projection, h(x) → ρ, running along ℓ_{x,Q}
+  if(sh.rho&&rho&&finite){
+    const ar=arrowTo(Sx(h[0]),Sy(h[1]),Sx(rho[0]),Sy(rho[1]),col('--ink'),1.8,9,10,9);
+    if(ar)scene.appendChild(ar);
+  }
+  // points
+  if(finite){
+    scene.appendChild(dot(h,col('--rconic')));
+    scene.appendChild(txt(Sx(h[0])-8,Sy(h[1])+16,"h(x)",col('--ink'),14,"end"));
+  }
+  // dashed drop ρ → π(x,Q): the projection from p_∞ onto the S-axis
+  if(sh.pi&&rho){
+    scene.appendChild(line(Sx(rho[0]),Sy(rho[1]),Sx(rho[0]),Sy(0),col('--pi'),1.6,"5 4"));
+  }
+  if(sh.rho&&rho){scene.appendChild(dot(rho,col('--rconic')));
+    scene.appendChild(txt(Sx(rho[0])+8,Sy(rho[1])+16,"ρ",col('--ink'),14));}
+  if(sh.pi&&rho){
+    scene.appendChild(el("circle",{cx:Sx(rho[0]),cy:Sy(0),r:6,fill:col('--pi'),stroke:"#0b101c","stroke-width":2}));
+    scene.appendChild(txt(Sx(rho[0])+9,Sy(0)-9,"π(x,Q)",col('--pi'),13));
+  }
+  // x sits on the S-axis at S = x — equivalently the divisor 0+x, which is also
+  // where the tangent D_x: P = xS - x² crosses P = 0.  Γ(x) = (2x, x²) is the
+  // matching point of the conic; no link is drawn, since D_x already joins them.
+  if(finite&&Math.abs(g[0])<Sr+1&&g[1]<Pt+1){
+    scene.appendChild(dot(g,col('--gamma'),4.6));
+    scene.appendChild(txt(Sx(g[0])+9,Sy(g[1])-8,"Γ(x)",col('--gamma'),14));
+  }
+  if(finite&&Math.abs(x)<Sr){
+    scene.appendChild(el("circle",{cx:Sx(x),cy:Sy(0),r:9,fill:"none",stroke:col('--gamma'),"stroke-width":1.4,opacity:.55}));
+    scene.appendChild(dot([x,0],col('--gamma'),5));
+    scene.appendChild(txt(Sx(x)+9,Sy(0)+19,"x",col('--gamma'),15));
+  }
+  scene.appendChild(el("circle",{cx:Sx(Q[0]),cy:Sy(Q[1]),r:9,fill:"none",stroke:col('--ell'),"stroke-width":1.4,opacity:.55}));
+  scene.appendChild(dot(Q,col('--ell'),5));
+  scene.appendChild(txt(Sx(Q[0])+9,Sy(Q[1])-8,"Q",col('--ell'),15));
+
+  svg.replaceChildren(scene);
+
+  // ---- panel (plain text only: no re-typesetting on every frame) -----------
+  const fmt=v=>(v==null||!isFinite(v))?"—":(v>=0?" ":"")+v.toFixed(2);
+  const pair=P=>P==null?"—":`(${fmt(P[0])}, ${fmt(P[1])})`;
+  setNum("sliderNum",state.mode==="point"?state.x:state.rho,3);
+  $("piVal").textContent = state.mode==="point" ? (inU&&rho?fmt(Sr_).trim():"—")
+                                                : fmt(state.mode==="map"?state.mw:state.rho).trim();
+  $("vX").textContent=fmt(x);
+  $("vTau").textContent=fmt(finite?tau(x):null);
+  $("vAlpha").textContent=fmt(finite?alpha(x):null);
+  $("vG").textContent=pair(g);
+  $("vH").textContent=pair(h);
+  $("vQ").textContent=pair(Q);
+  $("vRho").textContent=pair(rho);
+  // κ = ζ = (D_{x_s}·T_{h(x_s)}R)/(P+2S²) evaluated at Q — depends only on Q and ρ,
+  // so it is defined even on the ruling x = ∞.  Pole locus: Q ∈ R (minus the
+  // basepoint cancellation at ρ).  σ = coordinate on the pencil of lines through ρ
+  // sending L_ρ = D_{x_s} to ∞ and the vertical member (x = ∞) to 0.
+  let kap=null,sig=null;
+  if(rho){
+    const W=rho[0];
+    const den=Q[1]+2*Q[0]*Q[0];
+    if(Math.abs(den)>1e-9)
+      kap=(Q[1]-2*W*Q[0]+4*W*W)*(Q[1]-8*W*Q[0]-8*W*W)/den;
+    const dS=Q[0]-W;
+    if(Math.abs(dS)<1e-9) sig=0;                       // vertical member → 0
+    else{
+      const mQ=(Q[1]+2*W*W)/dS;                        // slope of line(Q,ρ)
+      const g=mQ-2*W;                                  // offset from slope of L_ρ
+      sig=Math.abs(g)<1e-9?null:1/g;                   // L_ρ → ∞
+    }
+  }
+  const fmt4=v=>(v==null||!isFinite(v))?"—":(v>=0?" ":"")+v.toFixed(4);
+  $("vK").textContent=fmt4(kap);
+  $("vSig").textContent=fmt4(sig);
+  setNum("qsNum",Q[0],3);
+  setNum("qpNum",Q[1],3);
+  $("qsSlider").value=Q[0];
+  $("qpSlider").value=Q[1];
+  if(state.showKS) drawKS(kap,sig);
+  if(state.mode==="map") drawMapFig(x,Q);
+  setStatus(!finite?"stInf": inU?"stIn": onEx(x,Q)?"stEx":"stDx");
+}
+
+// ---- interaction ------------------------------------------------------
+function evtWorld(ev){
+  const r=svg.getBoundingClientRect();
+  return [(ev.clientX-r.left)/r.width*680,(ev.clientY-r.top)/r.height*660];
+}
+let drag=null;
+function pick(px,py){
+  if(state.mode==="map"){
+    const d=mapDerive(); if(!d.Q)return null;
+    const dq=Math.hypot(px-Sx(d.Q[0]),py-Sy(d.Q[1]));
+    const r=state.mw, dr=Math.hypot(px-Sx(r),py-Sy(-2*r*r));
+    if(dq<18&&dq<=dr)return "Q";
+    if(dr<18)return "rho";
+    return null;
+  }
+  const Q=state.Q;
+  const dq=Math.hypot(px-Sx(Q[0]),py-Sy(Q[1]));
+  if(state.mode==="point"){
+    const dg=Math.hypot(px-Sx(state.x),py-Sy(0));
+    if(dg<18&&dg<=dq)return "x";
+    if(dq<18)return "Q";
+    return null;
+  }
+  const r=state.rho, dr=Math.hypot(px-Sx(r),py-Sy(-2*r*r));
+  if(dq<18&&dq<=dr)return "Q";
+  if(dr<18)return "rho";
+  return null;
+}
+svg.addEventListener("pointerdown",ev=>{
+  const [px,py]=evtWorld(ev); const t=pick(px,py);
+  if(t){drag=t;svg.setPointerCapture(ev.pointerId);moveTo(px,py);}
+});
+svg.addEventListener("pointermove",ev=>{if(!drag)return;const [px,py]=evtWorld(ev);moveTo(px,py);});
+svg.addEventListener("pointerup",()=>drag=null);
+svg.addEventListener("pointercancel",()=>drag=null);
+function moveTo(px,py){
+  if(state.mode==="map"){
+    if(drag==="rho"){ state.mw=clamp(iS(px),-1.46,1.46); }
+    else if(drag==="Q"){
+      const d=mapDerive();
+      const S=clamp(iS(px),Sl+.05,Sr-.05), P=clamp(iP(py),Pb+.05,Pt-.05);
+      setFromXQ(d.x,S,P);
+    }
+    syncMapUI();render();return;
+  }
+  if(drag==="x"){state.x=clamp(iS(px),XMIN,XMAX);syncSlider();}
+  else if(drag==="rho"){state.rho=clamp(iS(px),XMIN,XMAX);syncSlider();}
+  else if(drag==="Q"){
+    const S=clamp(iS(px),Sl+.05,Sr-.05);
+    state.Q = state.lockR ? [S,-2*S*S] : [S,clamp(iP(py),Pb+.05,Pt-.05)];
+  }
+  render();
+}
+function syncSlider(){
+  const sl=$("slider");
+  const v = state.mode==="point"?state.x:state.rho;
+  // widen the track if a value carried over from the other mode falls outside it,
+  // so the slider never silently clamps and shifts the picture
+  const need = Math.min(8, Math.max(XMAX, Math.ceil(Math.abs(v)*10)/10));
+  if(need > +sl.max){ sl.max=need; sl.min=-need; }
+  sl.value=v;
+}
+function resetSliderRange(){ const sl=$("slider"); sl.max=XMAX; sl.min=XMIN; }
+$("slider").addEventListener("input",e=>{
+  if(state.mode==="map")return;
+  if(state.mode==="point")state.x=+e.target.value; else state.rho=+e.target.value;
+  render();});
+
+svg.addEventListener("keydown",e=>{
+  if(state.mode==="map")return;
+  const big=e.shiftKey, step=0.03; let used=true;
+  const bump=d=>{ if(state.mode==="point")state.x=clamp(state.x+d,XMIN,XMAX);
+                  else state.rho=clamp(state.rho+d,XMIN,XMAX); };
+  if(e.key==="ArrowLeft"){ big?state.Q[0]-=step:bump(-step); }
+  else if(e.key==="ArrowRight"){ big?state.Q[0]+=step:bump(step); }
+  else if(e.key==="ArrowUp"&&big)state.Q[1]+=step;
+  else if(e.key==="ArrowDown"&&big)state.Q[1]-=step;
+  else used=false;
+  if(used){e.preventDefault();syncSlider();render();}
+});
+
+// sweep animation
+let sweeping=false,raf=null,t0=0;
+$("sweep").addEventListener("click",()=>{
+  if(state.mode==="map")return;
+  const btn=$("sweep");
+  if(sweeping){sweeping=false;cancelAnimationFrame(raf);btn.textContent="Sweep";return;}
+  sweeping=true;t0=performance.now();btn.textContent="Stop";
+  const loop=t=>{if(!sweeping)return;const s=(t-t0)/2600;
+    const v=XMAX*Math.sin(s*Math.PI*2);
+    if(state.mode==="point")state.x=v; else state.rho=v;
+    syncSlider();render();raf=requestAnimationFrame(loop);};
+  raf=requestAnimationFrame(loop);
+});
+$("reset").addEventListener("click",()=>{
+  sweeping=false;cancelAnimationFrame(raf);$("sweep").textContent="Sweep";
+  state.x=0.9;state.rho=0.40;state.Q=[0.30,-1.00];
+  state.lockR=false;$("qLock").setAttribute("aria-pressed","false");
+  $("qpSlider").disabled=false;$("qpNum").disabled=false;
+  resetSliderRange();syncSlider();render();});
+
+// legend / toggles  (labels are LaTeX, typeset once when the page loads)
+const items=[["Dx","$D_x$ &nbsp;tangent to $\\Gamma$","--dx",false],
+  ["Ex","$E_x$ &nbsp;vertical pencil","--ex",false],
+  ["ell","$\\ell_{h(x),Q}$ &nbsp;construction line","--ell",false],
+  ["pi","$\\pi(x,Q)$ &nbsp;dot on the $S$-axis","--pi",true],
+  ["rho","$\\rho$ &nbsp;residual point","--rconic",false],
+  ["chord","$D_x$ as chord of $R$","--dx",true],
+  ["Flam","$G$ &nbsp;unit conic, osculating $R$ at $h(x_s)$","--flam",false],
+  ["Lrho","$L_\\rho$ &nbsp;chord to $x_s$: the removed ruling $D_{x_s}$","--dim",true],
+  ["Tline","$T_{h(x_s)}R$ &nbsp;tangent at $h(x_s)$: zero locus of $\\kappa$","--pi",true],
+  ["gamma","$\\Gamma$ &nbsp;Veronese conic","--gamma",false],
+  ["R","$R$ &nbsp;auxiliary conic","--rconic",false]];
+const leg=$("legend");
+for(const [key,label,cvar,dash] of items){
+  const l=document.createElement("label");l.className="tog"+(state.show[key]?"":" off");
+  l.innerHTML=`<input type="checkbox" ${state.show[key]?"checked":""}>
+    <span class="swatch ${dash?"dash":""}" style="border-top-color:var(${cvar})"></span>
+    <span class="name">${label}</span>`;
+  l.querySelector("input").addEventListener("change",e=>{
+    state.show[key]=e.target.checked;l.classList.toggle("off",!e.target.checked);
+    if(key==="Tline")$("tT").setAttribute("aria-pressed",String(state.show[key]));
+    render();});
+  leg.appendChild(l);
+}
+
+// ---- editable numeric boxes --------------------------------------------
+// A box being typed into is never overwritten by render(); Enter commits,
+// Esc or blur discards and restores the live value.
+function setNum(id,v,dp){
+  const e=$(id);
+  if(document.activeElement!==e){ e.value=v.toFixed(dp); e.classList.remove("bad"); }
+}
+function wireNum(id,get,set,lo,hi,dp){
+  const inp=$(id);
+  const restore=()=>{inp.value=get().toFixed(dp);inp.classList.remove("bad");};
+  inp.addEventListener("keydown",ev=>{
+    if(ev.key==="Enter"){
+      ev.preventDefault();
+      const v=parseFloat(inp.value.trim().replace(",","."));
+      if(!isFinite(v)){ inp.classList.add("bad"); return; }
+      inp.classList.remove("bad");
+      set(clamp(v,lo(),hi()));
+      render();
+      inp.value=get().toFixed(dp);      // show what was actually accepted
+      inp.select();
+    }else if(ev.key==="Escape"){ restore(); inp.blur(); }
+  });
+  inp.addEventListener("blur",restore);
+  inp.addEventListener("focus",()=>inp.select());
+}
+
+// ---- Q coordinate sliders ----------------------------------------------
+{const qs=$("qsSlider"), qp=$("qpSlider");
+ qs.min=(Sl+.05).toFixed(3); qs.max=(Sr-.05).toFixed(3);
+ qp.min=(Pb+.05).toFixed(3); qp.max=(Pt-.05).toFixed(3);
+ qs.addEventListener("input",e=>{
+   const S=+e.target.value;
+   state.Q = state.lockR ? [S,-2*S*S] : [S,state.Q[1]];
+   render();});
+ qp.addEventListener("input",e=>{
+   if(state.lockR){e.target.value=state.Q[1];return;}   // P is slaved while locked
+   state.Q=[state.Q[0],+e.target.value];render();});}
+$("qLock").addEventListener("click",()=>{
+  state.lockR=!state.lockR;
+  $("qLock").setAttribute("aria-pressed",String(state.lockR));
+  $("qpSlider").disabled=state.lockR;
+  $("qpNum").disabled=state.lockR;
+  if(state.lockR) state.Q=[state.Q[0],-2*state.Q[0]*state.Q[0]];
+  render();});
+wireNum("sliderNum",
+  ()=>state.mode==="point"?state.x:state.rho,
+  v=>{ if(state.mode==="point")state.x=v; else state.rho=v; syncSlider(); },
+  ()=>-8, ()=>8, 3);
+wireNum("qsNum",
+  ()=>state.Q[0],
+  v=>{ state.Q = state.lockR ? [v,-2*v*v] : [v,state.Q[1]]; },
+  ()=>Sl+.05, ()=>Sr-.05, 3);
+wireNum("qpNum",
+  ()=>state.Q[1],
+  v=>{ if(!state.lockR) state.Q=[state.Q[0],v]; },
+  ()=>Pb+.05, ()=>Pt-.05, 3);
+
+$("tQ").addEventListener("click",()=>{
+  state.showQ=!state.showQ;
+  $("tQ").setAttribute("aria-pressed",String(state.showQ));
+  $("qcard").classList.toggle("hidden",!state.showQ);
+});
+
+// ---- extra-plot toggles -------------------------------------------------
+$("tKS").addEventListener("click",()=>{
+  if(state.mode==="map")return;
+  state.showKS=!state.showKS;
+  $("tKS").setAttribute("aria-pressed",String(state.showKS));
+  $("ksWrap").classList.toggle("hidden",!state.showKS);
+  if(state.showKS) render();
+});
+
+function syncLegend(which){
+  const labs=$("legend").querySelectorAll("label.tog");
+  items.forEach(([key],i)=>{ if(key!==which)return; const l=labs[i]; if(!l)return;
+    l.querySelector("input").checked=state.show[key];
+    l.classList.toggle("off",!state.show[key]); });
+}
+$("tT").addEventListener("click",()=>{
+  state.show.Tline=!state.show.Tline;
+  $("tT").setAttribute("aria-pressed",String(state.show.Tline));
+  syncLegend("Tline");
+  render();
+});
+$("tK1").addEventListener("click",()=>{
+  state.showK1=!state.showK1;
+  $("tK1").setAttribute("aria-pressed",String(state.showK1));
+  render();
+});
+
+
+// ---- map mode -----------------------------------------------------------
+function mapDerive(){
+  const k=state.mk,s=state.ms,w=state.mw;
+  if(Math.abs(s)<5e-4) return {x:null, Q:[w, k+16*w*w]};      // sigma = 0 -> x = infinity
+  const x=2*w+1/(2*s);
+  let C=2*k*s*s+6*s*w-1; if(Math.abs(C)<1e-6)C=(C<0?-1:1)*1e-6;
+  const S=-(4*k*w*s*s+k*s+12*s*w*w+w)/C;
+  return {x, Q:[S, 2*(x-w)*(S-w)-2*w*w]};
+}
+function syncMapUI(){
+  const widen=(id,v)=>{const sl=$(id);
+    if(Math.abs(v)>+sl.max){sl.max=Math.ceil(Math.abs(v));sl.min=-sl.max;}};
+  widen("mkSlider",state.mk); widen("msSlider",state.ms);
+  $("mwSlider").value=state.mw; $("mwNum").textContent=state.mw.toFixed(3);
+  $("piSlider2").value=state.mw;
+  $("mkSlider").value=state.mk; $("mkNum").textContent=state.mk.toFixed(3);
+  $("msSlider").value=state.ms; $("msNum").textContent=state.ms.toFixed(3);
+}
+for(const [id,key] of [["mwSlider","mw"],["mkSlider","mk"],["msSlider","ms"]])
+  $(id).addEventListener("input",e=>{state[key]=+e.target.value;syncMapUI();render();});
+function padWorld(ev,sv,Wd,Hd){const r=sv.getBoundingClientRect();
+  return [(ev.clientX-r.left)/r.width*Wd,(ev.clientY-r.top)/r.height*Hd];}
+function setFromXQ(xx,S,P){
+  if(xx==null){ state.mw=clamp(S,-1.46,1.46); state.mk=clamp(P-16*S*S,-48,48); state.ms=0; }
+  else{
+    const W=xx-(P+2*xx*xx)/(2*(S+xx));
+    if(!isFinite(W))return;
+    state.mw=clamp(W,-1.46,1.46);
+    state.ms=clamp((S+xx)/(2*(P-xx*S+xx*xx)),-24,24);
+    state.mk=clamp((P-2*W*S+4*W*W)*(P-8*W*S-8*W*W)/(P+2*S*S),-48,48);
+  }
+}
+const CXK=34,CXX=160,CXY=100;
+function mapXQ(){
+  const d=mapDerive(); const S=d.Q[0],P=d.Q[1],disc=S*S-4*P;
+  let q1,q2;
+  if(disc>=0){const r=Math.sqrt(disc);q1=[(S+r)/2,0];q2=[(S-r)/2,0];}
+  else{const r=Math.sqrt(-disc)/2;q1=[S/2,r];q2=[S/2,-r];}
+  return {x:d.x,S,P,q1,q2};
+}
+let cxDrag=null;
+function cxMove(ev){
+  const [px,py]=padWorld(ev,$("cxPlot"),320,200);
+  const re=(px-CXX)/CXK, im=(CXY-py)/CXK;
+  const m=mapXQ();
+  if(cxDrag==="x"){ setFromXQ(clamp(re,-8,8), m.S, m.P); }
+  else{
+    const other=cxDrag==="q1"?m.q2:m.q1;
+    let S,P;
+    if(Math.abs(im)>0.05){ S=2*re; P=re*re+im*im; }   // conjugate pair z, z̄
+    else{ const oR=other[0]; S=re+oR; P=re*oR; }      // both real; the other root stays put
+    setFromXQ(m.x, S, P);
+  }
+  syncMapUI();render();
+}
+$("cxPlot").addEventListener("pointerdown",ev=>{
+  const [px,py]=padWorld(ev,$("cxPlot"),320,200);
+  const m=mapXQ();
+  const cand=[["x",(m.x!=null&&isFinite(m.x))?[CXX+m.x*CXK,CXY]:null],
+              ["q1",[CXX+m.q1[0]*CXK,CXY-m.q1[1]*CXK]],
+              ["q2",[CXX+m.q2[0]*CXK,CXY-m.q2[1]*CXK]]];
+  let best=null,bd=17;
+  for(const [nm,pt] of cand){if(!pt)continue;
+    const dd=Math.hypot(px-pt[0],py-pt[1]);if(dd<bd){bd=dd;best=nm;}}
+  if(best){cxDrag=best;$("cxPlot").setPointerCapture(ev.pointerId);cxMove(ev);}
+});
+$("cxPlot").addEventListener("pointermove",ev=>{if(cxDrag)cxMove(ev);});
+$("cxPlot").addEventListener("pointerup",()=>cxDrag=null);
+$("cxPlot").style.cursor="crosshair";
+$("s3Zoom").addEventListener("input",e=>{state.s3Z=+e.target.value;render();});
+$("s3Rot").addEventListener("input",e=>{state.s3R=+e.target.value;render();});
+$("piSlider2").addEventListener("input",e=>{state.mw=+e.target.value;syncMapUI();render();});
+
+// ---- dragging the point in the (kappa, sigma) chart -----------------------
+// map mode: sets (mk, ms) directly.  point / fiber: holds pi fixed and moves
+// (x,Q) to Psi(pi, kappa, sigma), so the whole picture follows the chart.
+let ksDrag=false;
+function ksApply(kv,sv){
+  if(state.mode==="map"){ state.mk=kv; state.ms=sv; syncMapUI(); render(); return; }
+  if(Math.abs(sv)<5e-4) return;                     // x = infinity: not storable here
+  const W = state.mode==="point" ? residualS(state.x,state.Q[0],state.Q[1]) : state.rho;
+  if(W==null||!isFinite(W)) return;
+  const xN=2*W+1/(2*sv);
+  let C=2*kv*sv*sv+6*sv*W-1; if(Math.abs(C)<1e-6)C=(C<0?-1:1)*1e-6;
+  const S=-(4*kv*W*sv*sv+kv*sv+12*sv*W*W+W)/C;
+  const P=2*(xN-W)*(S-W)-2*W*W;
+  state.Q=[clamp(S,Sl+.05,Sr-.05),clamp(P,Pb+.05,Pt-.05)];
+  if(state.mode==="point"){ state.x=clamp(xN,-8,8); syncSlider(); }
+  render();
+}
+function ksMove(ev){
+  const r=ksSvg.getBoundingClientRect();
+  const px=(ev.clientX-r.left)/r.width*680, py=(ev.clientY-r.top)/r.height*300;
+  ksApply(clamp((px-KOX)/KSK,-KMAX,KMAX), clamp((KOY-py)/KSS,-SMAXV,SMAXV));
+}
+ksSvg.addEventListener("pointerdown",ev=>{ksDrag=true;ksSvg.setPointerCapture(ev.pointerId);ksMove(ev);});
+ksSvg.addEventListener("pointermove",ev=>{if(ksDrag)ksMove(ev);});
+ksSvg.addEventListener("pointerup",()=>ksDrag=false);
+
+// ---- reset everything to a clean default view -----------------------------
+function resetDefaults(){
+  sweeping=false;cancelAnimationFrame(raf);$("sweep").textContent="Sweep";
+  state.x=0.9;state.rho=0.40;state.Q=[0.30,-1.00];
+  state.mk=0.8;state.ms=-0.8;state.mw=0.3;
+  state.s3Z=1;state.s3R=0;
+  $("s3Zoom").value=1;$("s3Rot").value=0;
+  state.lockR=false;$("qLock").setAttribute("aria-pressed","false");
+  $("qpSlider").disabled=false;$("qpNum").disabled=false;
+  if(!state.showS3){state.showS3=true;$("tS3").setAttribute("aria-pressed","true");
+    $("s3Plot").classList.remove("hidden");}
+  if(!state.showKS){state.showKS=true;$("tKS").setAttribute("aria-pressed","true");
+    $("ksWrap").classList.remove("hidden");}
+  if(!state.showK1){state.showK1=true;$("tK1").setAttribute("aria-pressed","true");}
+  Object.assign(state.show,{Dx:true,Ex:true,ell:true,rho:true,pi:true,chord:false,
+    gamma:true,R:true,Flam:false,Lrho:true,Tline:false});
+  $("tT").setAttribute("aria-pressed","false");
+  const labs=$("legend").querySelectorAll("label.tog");
+  items.forEach(([key],i)=>{const l=labs[i];if(!l)return;
+    l.querySelector("input").checked=state.show[key];
+    l.classList.toggle("off",!state.show[key]);});
+  const mks=$("mkSlider"),mss=$("msSlider");
+  mks.min=-6;mks.max=6;mss.min=-3;mss.max=3;
+  resetSliderRange();syncMapUI();syncSlider();render();
+}
+$("tDefault").addEventListener("click",resetDefaults);
+$("tS3").addEventListener("click",()=>{state.showS3=!state.showS3;
+  $("tS3").setAttribute("aria-pressed",String(state.showS3));
+  $("s3Plot").classList.toggle("hidden",!state.showS3);
+  if(state.showS3)render();});
+function drawMapFig(x,Q){
+  // (b1) complex plane: x and the two points of the divisor Q
+  const ck=34,ccx=160,ccy=100;
+  const cX=re=>ccx+re*ck, cY=im=>ccy-im*ck;
+  const c=el("g",{});
+  const cg=el("g",{opacity:.5});
+  for(let t=-4;t<=4;t++)cg.appendChild(line(cX(t),cY(-2.6),cX(t),cY(2.6),col('--line'),1));
+  for(let t=-2;t<=2;t++)cg.appendChild(line(cX(-4.5),cY(t),cX(4.5),cY(t),col('--line'),1));
+  c.appendChild(cg);
+  c.appendChild(line(cX(-4.5),cY(0),cX(4.5),cY(0),col('--muted'),1.2));
+  c.appendChild(line(cX(0),cY(-2.6),cX(0),cY(2.6),col('--muted'),1.2));
+  c.appendChild(txt(cX(4.5)-3,cY(0)-6,"Re",col('--dim'),11,undefined,false));
+  c.appendChild(txt(cX(0)+5,cY(2.6)+11,"Im",col('--dim'),11,undefined,false));
+  const S=Q[0],P=Q[1],disc=S*S-4*P;
+  let q1,q2;
+  if(disc>=0){const r=Math.sqrt(disc);q1=[(S+r)/2,0];q2=[(S-r)/2,0];}
+  else{const r=Math.sqrt(-disc)/2;q1=[S/2,r];q2=[S/2,-r];}
+  if(Math.abs(q1[1])>1e-9)
+    c.appendChild(line(cX(q1[0]),cY(q1[1]),cX(q2[0]),cY(q2[1]),col('--ell'),1,"3 3"));
+  let i=1;
+  for(const q of [q1,q2]){
+    if(Math.abs(q[0])<4.6&&Math.abs(q[1])<2.7){
+      c.appendChild(el("circle",{cx:cX(q[0]),cy:cY(q[1]),r:5,fill:col('--ell'),
+        stroke:"#0b101c","stroke-width":1.6}));
+      c.appendChild(txtSub(cX(q[0])+8,cY(q[1])-6,"q",String(i),col('--ell'),12));
+    }
+    i++;
+  }
+  if(x!=null&&isFinite(x)&&Math.abs(x)<4.6){
+    c.appendChild(el("circle",{cx:cX(x),cy:cY(0),r:5,fill:col('--gamma'),
+      stroke:"#0b101c","stroke-width":1.6}));
+    c.appendChild(txt(cX(x)+8,cY(0)+16,"x",col('--gamma'),13));
+  }else{
+    c.appendChild(txt(cX(4.4),cY(0)+16,x==null?"x = ∞":"x off chart",col('--gamma'),11,"end",false));
+  }
+  $("cxPlot").replaceChildren(c);
+  // (b2) the point of Sym^3(P^1) = P^3
+  if(state.showS3){
+    const o=[150,140], z3=state.s3Z, k3=16/z3, CL=3.4*z3, AX=3.6*z3;
+    const th=state.s3R*Math.PI/180, ct=Math.cos(th), stt=Math.sin(th);
+    const I=(a,b,cc)=>{const A2=a*ct-b*stt, B2=a*stt+b*ct;
+      return [o[0]+(A2-B2)*0.866*k3, o[1]+(A2+B2)*0.5*k3-cc*k3];};
+    const s3=el("g",{});
+    const O=I(0,0,0);
+    for(const [v,mn,sb] of [[[AX,0,0],"e","1"],[[0,AX,0],"e","2"],[[0,0,AX],"e","3"]]){
+      const E=I(v[0],v[1],v[2]);
+      s3.appendChild(line(O[0],O[1],E[0],E[1],col('--dim'),1.2));
+      s3.appendChild(txtSub(E[0]+4,E[1]+3,mn,sb,col('--dim'),12));
+    }
+    if(x!=null&&isFinite(x)){
+      const e1=x+S,e2=x*S+P,e3=x*P;
+      const cl=v=>clamp(v,-CL,CL);
+      const a=cl(e1),b=cl(e2),cc=cl(e3),off=(a!==e1||b!==e2||cc!==e3);
+      const Pt3=I(a,b,cc),F=I(a,b,0);
+      s3.appendChild(line(O[0],O[1],F[0],F[1],col('--accent'),1,"2 3"));
+      s3.appendChild(line(F[0],F[1],Pt3[0],Pt3[1],col('--accent'),1,"2 3"));
+      s3.appendChild(el("circle",{cx:Pt3[0],cy:Pt3[1],r:6,fill:col('--pi'),
+        stroke:"#0b101c","stroke-width":2}));
+      s3.appendChild(txt(Pt3[0]+9,Pt3[1]-7,(off?"off chart: ":"")+"("+e1.toFixed(2)+", "+e2.toFixed(2)+", "+e3.toFixed(2)+")",
+        col('--ink'),11,undefined,false));
+    }else{
+      s3.appendChild(txt(o[0],o[1]-12,"x = ∞ : e₀ = 0, the point lies at infinity of P³",col('--dim'),11.5,"middle",false));
+      s3.appendChild(txt(o[0],o[1]+8,"[0 : 1 : "+S.toFixed(2)+" : "+P.toFixed(2)+"]",col('--muted'),12,"middle",false));
+    }
+    $("s3Plot").replaceChildren(s3);
+  }
+}
+
+// ---- mode switching ----------------------------------------------------
+function setMode(mode){
+  if(mode!==state.mode){
+    // hand over derived quantities so the picture stays continuous
+    if(state.mode==="map"){
+      const d=mapDerive();
+      if(d.x!=null&&isFinite(d.x)) state.x=clamp(d.x,-8,8);
+      state.Q=[clamp(d.Q[0],Sl+.05,Sr-.05),clamp(d.Q[1],Pb+.05,Pt-.05)];
+      state.rho=state.mw;
+    }
+    if(mode==="fiber"){
+      const r=residualS(state.x,state.Q[0],state.Q[1]);
+      if(r!=null&&isFinite(r)) state.rho=r;
+    }else if(mode==="point"&&state.mode==="fiber"){
+      const nx=xFromRhoQ(state.rho,state.Q[0],state.Q[1]);
+      if(nx!=null&&isFinite(nx)) state.x=nx;
+    }else if(mode==="map"){
+      const W=state.mode==="point"?residualS(state.x,state.Q[0],state.Q[1]):state.rho;
+      const xx=state.mode==="point"?state.x:xFromRhoQ(state.rho,state.Q[0],state.Q[1]);
+      if(W!=null&&isFinite(W)&&xx!=null&&isFinite(xx)){
+        const S=state.Q[0],P=state.Q[1];
+        state.mw=clamp(W,-1.46,1.46);
+        state.ms=clamp((S+xx)/(2*(P-xx*S+xx*xx)),-3,3);
+        state.mk=clamp((P-2*W*S+4*W*W)*(P-8*W*S-8*W*W)/(P+2*S*S),-6,6);
+      }
+    }
+  }
+  state.mode=mode;
+  const M=mode;
+  $("mPoint").setAttribute("aria-pressed",String(M==="point"));
+  $("mFiber").setAttribute("aria-pressed",String(M==="fiber"));
+  $("mMap").setAttribute("aria-pressed",String(M==="map"));
+  const show={point:["heroNotePoint","tipPoint"],
+              fiber:["heroNoteFiber","tipFiber"],
+              map:["heroNoteMap","tipMap"]};
+  for(const key in show)for(const id of show[key])
+    $(id).classList.toggle("hidden",!show[M].includes(id));
+  $("headPoint").classList.toggle("hidden",M!=="point");
+  $("headFiber").classList.toggle("hidden",M!=="fiber");
+  $("nmPoint").classList.toggle("hidden",M!=="point");
+  $("nmFiber").classList.toggle("hidden",M!=="fiber");
+  $("paramCard").classList.toggle("hidden",M==="map");
+  $("mapCard").classList.toggle("hidden",M!=="map");
+  $("outWrap").classList.toggle("hidden",M!=="map");
+  $("ksTitleStd").classList.toggle("hidden",M==="map");
+  $("ksTitleMap").classList.toggle("hidden",M!=="map");
+  $("piRow").classList.toggle("hidden",M!=="map");
+  if(M==="map"&&!state.showKS){state.showKS=true;
+    $("tKS").setAttribute("aria-pressed","true");$("ksWrap").classList.remove("hidden");}
+  if(M==="map")syncMapUI();
+  syncSlider();render();
+}
+$("mPoint").addEventListener("click",()=>setMode("point"));
+$("mFiber").addEventListener("click",()=>setMode("fiber"));
+$("mMap").addEventListener("click",()=>setMode("map"));
+
+// download current SVG
+$("dlSvg").addEventListener("click",e=>{
+  e.preventDefault();
+  const clone=svg.cloneNode(true);clone.setAttribute("xmlns",NS);
+  const bg=el("rect",{x:0,y:0,width:680,height:660,fill:"#0e131f"});clone.insertBefore(bg,clone.firstChild);
+  const blob=new Blob(['<?xml version="1.0"?>\n'+clone.outerHTML],{type:"image/svg+xml"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+  a.download="residual_intersection_view.svg";a.click();
+});
+
+setMode("point");
+</script>
+</body>
+</html>
